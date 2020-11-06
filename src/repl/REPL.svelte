@@ -14,7 +14,7 @@
 	})
 
 	function compile (_components) {
-		worker.postMessage(_components)
+		compiler.postMessage(_components)
 	}
 
 	$: compile(components)
