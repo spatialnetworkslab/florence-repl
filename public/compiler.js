@@ -19,15 +19,16 @@ const testDependency2 = 'export default { foo: \'bar\' }';
 
 const dependencyLookup = {
   'my-test-dependency': testDependency,
-  'my-test-depencency2': testDependency2
+  'my-test-dependency2': testDependency2
 };
 
 const CDN_URL = 'https://cdn.jsdelivr.net/npm/';
 
+// eslint-disable-next-line
 importScripts(`${CDN_URL}svelte/compiler.js`);
 
 async function fetchPackage (url) {
-	return (await fetch(url)).text()
+  return (await fetch(url)).text()
 }
 
 const componentLookup = {};
@@ -39,17 +40,17 @@ function generateComponentLookup (components) {
 }
 
 function resolveId (importee, importer) {
-  if (importee === "svelte") return `${CDN_URL}/svelte/index.mjs`
+  if (importee === 'svelte') return `${CDN_URL}/svelte/index.mjs`
 
   // import x from 'svelte/somewhere'
-  if (importee.startsWith("svelte/")) {
+  if (importee.startsWith('svelte/')) {
     return `${CDN_URL}/svelte/${importee.slice(7)}/index.mjs`
   }
 
   // import x from './file.js' (via a 'svelte' or 'svelte/x' package)
   if (importer && importer.startsWith(`${CDN_URL}/svelte`)) {
     const resolved = new URL(importee, importer).href;
-    if (resolved.endsWith(".mjs")) return resolved
+    if (resolved.endsWith('.mjs')) return resolved
 
     return `${resolved}/index.mjs`
   }
@@ -61,7 +62,7 @@ function resolveId (importee, importer) {
   if (importee in dependencyLookup) return importee
 
   // relative imports from a remote package
-  if (importee.startsWith(".")) return new URL(importee, importer).href
+  if (importee.startsWith('.')) return new URL(importee, importer).href
 
   throw new Error(`Invalid import '${importee}' in ${importer}`)
 }
@@ -72,7 +73,7 @@ async function load (id) {
   }
 
   if (id in dependencyLookup) {
-    return dependencyLookup[id].source
+    return dependencyLookup[id]
   }
 
   return await fetchPackage(id)
@@ -80,33 +81,34 @@ async function load (id) {
 
 function transform (code, id) {
   // our only transform is to compile svelte components
+  // eslint-disable-next-line
   if (/.*\.svelte/.test(id)) return svelte.compile(code).js.code
 }
 
 self.addEventListener(
-	'message',
-	async event => {
+  'message',
+  async event => {
     generateComponentLookup(event.data);
 
-		const bundle = await Fo({
-			input: './App.svelte',
-			plugins: [
-				{
-					name: 'repl-plugin',
-					resolveId,
-					load,
-					transform
-				},
-			],
-		});
+    const bundle = await Fo({
+      input: './App.svelte',
+      plugins: [
+        {
+          name: 'repl-plugin',
+          resolveId,
+          load,
+          transform
+        }
+      ]
+    });
 
-		// a touch longwinded but output contains an array of chunks
-		// we are not code-splitting, so we only have a single chunk
-    const output = (await bundle.generate({ format: "esm" }))
+    // a touch longwinded but output contains an array of chunks
+    // we are not code-splitting, so we only have a single chunk
+    const output = (await bundle.generate({ format: 'esm' }))
       .output[0]
-			.code;
+      .code;
 
-		self.postMessage(output);
-	}
+    self.postMessage(output);
+  }
 );
 //# sourceMappingURL=compiler.js.map

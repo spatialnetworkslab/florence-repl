@@ -7,5 +7,5 @@ const testDependency2 = 'export default { foo: \'bar\' }'
 
 export const dependencyLookup = {
   'my-test-dependency': testDependency,
-  'my-test-depencency2': testDependency2
+  'my-test-dependency2': testDependency2
 }
