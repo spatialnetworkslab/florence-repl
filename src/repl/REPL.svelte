@@ -1,9 +1,8 @@
 <script>
 	import Input from './Input.svelte'
-	import Output from "./Output.svelte";
-	import type { Component } from "./types";
+	import Output from './Output.svelte'
 
-	let components: Component[] = [
+	let components = [
 		{
 			id: 0,
 			name: "App",
@@ -24,20 +23,20 @@
 			type: "svelte",
 			source: "<h1>Hello</h1>",
 		},
-	];
+	]
 
-	let current: number = 0;
+	let current = 0
 
-	const worker = new Worker("./worker.js");
+	const worker = new Worker("./worker.js")
 
-	let compiled;
+	let compiled
 
 	worker.addEventListener("message", (event) => {
 		compiled = event.data;
 	});
 
-	function compile(_components: Component[]): void {
-		worker.postMessage(_components);
+	function compile(_components) {
+		worker.postMessage(_components)
 	}
 
 	$: compile(components);
