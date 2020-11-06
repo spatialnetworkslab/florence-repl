@@ -3,10 +3,7 @@
 
   const appSource = `
 <script>
-  import Component from './Component1.svelte';
-  import testDep from 'my-test-dependency'
-
-  testDep()
+  import Component from './Component1.svelte'
 <\/script>
 
 <Component />
