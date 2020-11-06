@@ -3,10 +3,11 @@
 
   const appSource = `
 <script>
-  import Component from './Component1.svelte';
-  import testDep from 'my-test-dependency'
+  import Component from './Component1.svelte'
+  import DataContainer from '@snlab/florence-datacontainer'
 
-  testDep()
+  const dc = new DataContainer({ a: [1, 2, 3] })
+  console.log(dc.column('a'))
 <\/script>
 
 <Component />

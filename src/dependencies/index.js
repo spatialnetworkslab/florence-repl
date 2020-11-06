@@ -1,11 +1,7 @@
-const testDependency = `import testDep2 from 'my-test-dependency2'
-export default function() {
-  console.log(testDep2)
-}`
+import DataContainer from './DataContainer.txt'
+import exportDefault from './exportDefault.js'
 
-const testDependency2 = 'export default { foo: \'bar\' }'
-
-export const dependencyLookup = {
-  'my-test-dependency': testDependency,
-  'my-test-dependency2': testDependency2
+export default {
+  // https://unpkg.com/@snlab/florence-datacontainer@0.1.9/dist/florence-datacontainer.umd.js
+  '@snlab/florence-datacontainer': exportDefault(DataContainer)
 }

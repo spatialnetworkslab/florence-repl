@@ -3,6 +3,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
+import { string } from 'rollup-plugin-string'
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -90,7 +91,14 @@ export default [
         browser: true,
         dedupe: ['svelte']
       }),
-      commonjs()
+      commonjs(),
+      string({
+        // Required to be specified
+        include: '**/*.txt'
+
+        // Undefined by default
+        // exclude: []
+      })
     ],
     watch: {
       clearScreen: false
