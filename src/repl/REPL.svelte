@@ -8,13 +8,15 @@
 
 	let current = 0
 	let compiled
+	let cache
 
 	compiler.addEventListener('message', event => {
-		compiled = event.data
+		compiled = event.data.compiled
+		cache = event.data.cache
 	})
 
-	function compile (_components) {
-		compiler.postMessage(_components)
+	function compile (components) {
+		compiler.postMessage({components, cache})
 	}
 
 	$: compile(components)
