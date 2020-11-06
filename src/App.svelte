@@ -1,7 +1,8 @@
 <script>
   import REPL from './repl/REPL.svelte'
 
-  const appSource = `<script>
+  const appSource = `
+<script>
   import Component from './Component1.svelte';
   import testDep from 'my-test-dependency'
 
