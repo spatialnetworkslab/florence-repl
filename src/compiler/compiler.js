@@ -6,7 +6,7 @@ const CDN_URL = 'https://cdn.jsdelivr.net/npm/'
 importScripts(`${CDN_URL}svelte/compiler.js`)
 
 async function fetchPackage (url) {
-	return (await fetch(url)).text()
+  return (await fetch(url)).text()
 }
 
 const componentLookup = {}
