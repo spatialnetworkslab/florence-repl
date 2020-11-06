@@ -63,15 +63,15 @@ function transform (code, id) {
 }
 
 self.addEventListener(
-	"message",
-	async (event: MessageEvent<Component[]>): Promise<void> => {
+	'message',
+	async event => {
     generateComponentLookup(event.data)
 
 		const bundle = await rollup.rollup({
-			input: "./App.svelte",
+			input: './App.svelte',
 			plugins: [
 				{
-					name: "repl-plugin",
+					name: 'repl-plugin',
 					resolveId,
 					load,
 					transform

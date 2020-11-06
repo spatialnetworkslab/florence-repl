@@ -2,7 +2,7 @@
 	import Input from './Input.svelte'
 	import Output from './Output.svelte'
 
-  const compiler = new Worker('../compiler/compiler.js')
+  const compiler = new Worker('./compiler.js')
 
 	export let components = []
 
