@@ -1,4 +1,4 @@
-import fetchPackage from './fetchPackage.js'
+import fetchIfUncached from './fetchPackage.js'
 
 export default function (componentLookup, dependencyLookup) {
   return async function load (id) {
@@ -10,6 +10,6 @@ export default function (componentLookup, dependencyLookup) {
       return dependencyLookup[id]
     }
 
-    return await fetchPackage(id)
+    return await fetchIfUncached(id)
   }
 }
