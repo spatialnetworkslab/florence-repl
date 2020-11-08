@@ -9,7 +9,7 @@
 	let bundled
 	let cache
 
-	compiler.addEventListener('message', event => {
+	bundler.addEventListener('message', event => {
 		bundled = event.data.bundled
 		cache = event.data.cache
 	})

@@ -27,7 +27,7 @@
 	}
 
   $: currentFileIndex = replFiles.findIndex(({ id }) => id === currentFileId)
-  $: currentFile = replFiles[currentFileId]
+  $: currentFile = replFiles[currentFileIndex]
   $: currentCode = currentFile.source
 
   $: {
