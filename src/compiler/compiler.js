@@ -17,9 +17,10 @@ function generateComponentLookup (components) {
 self.addEventListener(
   'message',
   async event => {
-    console.log(event.data)
     generateComponentLookup(event.data.components)
+
     let cache = event.data.cache
+
     const bundle = await rollup.rollup({
       input: './App.svelte',
       cache,
@@ -32,6 +33,7 @@ self.addEventListener(
         }
       ]
     })
+
     cache = bundle.cache
 
     // a touch longwinded but output contains an array of chunks
