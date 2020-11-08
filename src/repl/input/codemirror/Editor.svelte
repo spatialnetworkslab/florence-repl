@@ -18,9 +18,6 @@
   // Reference to <textarea> HTML element
   let textArea
 
-  // Code displayed
-  let code
-
   // Current file type
   let editorFileType
 
@@ -102,8 +99,7 @@
       await createEditor()
     }
 
-    code = currentFile.source
-    editor.setValue(code)
+    editor.setValue(currentFile.source)
 
     updatingExternally = false
   }
@@ -190,7 +186,6 @@
 		tabindex='2'
 		bind:this={textArea}
 		readonly
-		value={code}
 	/>
 
 </div>
