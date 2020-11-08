@@ -17,10 +17,13 @@ function generateComponentLookup (components) {
 self.addEventListener(
   'message',
   async event => {
-    generateComponentLookup(event.data)
+    generateComponentLookup(event.data.components)
+
+    let cache = event.data.cache
 
     const bundle = await rollup.rollup({
       input: './App.svelte',
+      cache,
       plugins: [
         {
           name: 'repl-plugin',
@@ -31,12 +34,14 @@ self.addEventListener(
       ]
     })
 
+    cache = bundle.cache
+
     // a touch longwinded but output contains an array of chunks
     // we are not code-splitting, so we only have a single chunk
-    const output = (await bundle.generate({ format: 'esm' }))
+    const compiled = (await bundle.generate({ format: 'esm' }))
       .output[0]
       .code
 
-    self.postMessage(output)
+    self.postMessage({ compiled, cache })
   }
 )
