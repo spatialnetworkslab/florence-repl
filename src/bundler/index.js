@@ -1,4 +1,5 @@
 import * as rollup from 'rollup/dist/es/rollup.browser.js'
+import json from './plugins/json.js'
 
 import getResolveId from './getResolveId.js'
 import getLoad from './getLoad.js'
@@ -28,8 +29,10 @@ self.addEventListener(
           resolveId: getResolveId(fileLookup),
           load: getLoad(fileLookup),
           transform: getTransform()
-        }
-      ]
+        },
+        json
+      ],
+      inlineDynamicImports: true
     })
 
     cache = bundle.cache
