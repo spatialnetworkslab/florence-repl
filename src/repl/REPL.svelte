@@ -1,12 +1,11 @@
 <script>
-	import Input from './Input.svelte'
-	import Output from './Output.svelte'
+	import Input from './input/Input.svelte'
+	import Output from './output/Output.svelte'
 
+	export let replFiles = []
+  
   const compiler = new Worker('./compiler.js')
 
-	export let components = []
-
-	let current = 0
 	let compiled
 	let cache
 
@@ -15,14 +14,14 @@
 		cache = event.data.cache
 	})
 
-	function compile (components) {
-		compiler.postMessage({components, cache})
+	function compile (replFiles) {
+		compiler.postMessage({replFiles, cache})
 	}
 
-	$: compile(components)
+	$: compile(replFiles)
 </script>
 
 <main>
-	<Input bind:components bind:current />
+	<Input bind:replFiles />
 	<Output {compiled} />
 </main>

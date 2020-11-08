@@ -13,7 +13,7 @@
 <Component />
 `
 
-  let components = [
+  const replFiles = [
 		{
 			id: 0,
 			name: 'App',
@@ -29,4 +29,4 @@
 	]
 </script>
 
-<REPL {components} />
+<REPL {replFiles} />
