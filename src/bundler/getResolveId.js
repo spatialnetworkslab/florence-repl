@@ -1,6 +1,6 @@
 import CDN_URL from './CDN_URL.js'
 
-export default function (componentLookup, dependencyLookup) {
+export default function (fileLookup, dependencyLookup) {
   return function resolveId (importee, importer) {
     // import x from 'svelte'
     if (importee === 'svelte') return `${CDN_URL}/svelte/index.mjs`
@@ -18,8 +18,8 @@ export default function (componentLookup, dependencyLookup) {
       return `${resolved}/index.mjs`
     }
 
-    // local repl components
-    if (importee in componentLookup) return importee
+    // local repl files
+    if (importee in fileLookup) return importee
 
     // local dependencies
     if (importee in dependencyLookup) return importee

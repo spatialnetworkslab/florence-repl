@@ -2,50 +2,25 @@
   import Tabs from './Tabs.svelte'
   import Editor from './codemirror/Editor.svelte'
 
-	export let replFiles
-  
-  let editor
-  let currentFileId
+  export let replFiles
+  export let currentFileName
 
-	function getMaxId (replFiles) {
-		const ids = replFiles.map(({ id }) => id)
-		return Math.max(...ids)
-	}
-
-	function newComponent () {
-		const id = getMaxId(replFiles) + 1
-
-		components = components.concat({
-			id,
-			name: `Component${id}`,
-			type: 'svelte',
-			source: '',
-		})
-
-		currentFileId = id
-		editor.focus()
-	}
-
-  $: currentFileIndex = replFiles.findIndex(({ id }) => id === currentFileId)
-  $: currentFile = replFiles[currentFileIndex]
-  $: currentCode = currentFile.source
-
-  $: {
-    editor.set(currentCode)
+  function updateCurrentFile (newCode) {
+    replFiles[currentFileName].source = newCode
+    replFiles = replFiles // needed for reactivity
   }
 </script>
 
 <section>
 
 	<Tabs
-		{replFiles}
-		{currentFileId}
-		on:select={id => (currentFileId = id)}
-		on:new={newComponent}
+		bind:replFiles
+		bind:currentFileName
   />
 
 	<Editor 
-    bind:this={editor}
+    currentFile={replFiles[currentFileName]}
+    on:change={updateCurrentFile}
   />
 
 </section>

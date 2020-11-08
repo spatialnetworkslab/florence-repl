@@ -1,8 +1,7 @@
 <script>
   import REPL from './repl/REPL.svelte'
 
-  const appSource = `
-<script>
+  const appSource = `<script>
   import Component from './Component1.svelte'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -12,21 +11,26 @@
 
 <Component />
 `
-
-  const replFiles = [
-		{
-			id: 0,
-			name: 'App',
+  const replFiles = {
+    'App.svelte': {
+      name: 'App',
 			type: 'svelte',
+      fileName: 'App.svelte',
 			source: appSource,
-		},
-		{
-			id: 1,
-			name: 'Component1',
-			type: 'svelte',
-			source: '<h1>Hello</h1>',
-		},
-	]
+    },
+    
+    'Component1.svelte': {
+      name: 'Component1',
+      type: 'svelte',
+      fileName: 'Component1.svelte',
+	    source: '<h1>Hello</h1>',
+    }
+  }
+
+  const currentFileName = 'App.svelte'
 </script>
 
-<REPL {replFiles} />
+<REPL
+  {replFiles}
+  {currentFileName}
+/>

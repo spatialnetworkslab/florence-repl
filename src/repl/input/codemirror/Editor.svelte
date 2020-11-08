@@ -1,127 +1,72 @@
 <script>
-  import { onMount, createEventDispatcher } from 'svelte'
   import CodeMirror from './codemirror.js'
+  import { onMount, createEventDispatcher, tick } from 'svelte'
+  import { createCodemirrorOptions } from './createCodemirrorOptions.js'
   import { sleep } from '../../../utils/sleep.js'
-	// import Message from './Message.svelte'
+  
+  const dispatch = createEventDispatcher()
 
-	const dispatch = createEventDispatcher()
+  export let currentFile
 
+  // Option props
 	export let readonly = false
 	export let errorLoc = null
 	export let flex = false
 	export let lineNumbers = true
-	export let tab = true
-
-	// Component methods
-	export async function set(new_code, new_mode) {
-		if (new_mode !== mode) {
-			await createEditor(mode = new_mode);
-		}
-
-		code = new_code;
-		updating_externally = true;
-		if (editor) editor.setValue(code);
-		updating_externally = false;
-	}
-
-	export function update(new_code) {
-		code = new_code;
-
-		if (editor) {
-			const { left, top } = editor.getScrollInfo();
-			editor.setValue(code = new_code);
-			editor.scrollTo(left, top);
-		}
-	}
-
-	export function resize() {
-		editor.refresh();
-	}
-
-	export function focus() {
-		editor.focus();
-	}
-
-	export function getHistory() {
-		return editor.getHistory();
-	}
-
-	export function setHistory(history) {
-		editor.setHistory(history);
-	}
-
-	export function clearHistory() {
-		if (editor) editor.clearHistory();
-  }
+  export let tab = true
   
-  let w
-	let h
-	let code = ''
-	let mode
+  // Reference to <textarea> HTML element
+  let textArea
 
-	let textArea
-	let editor
-	let updating_externally = false
-	let marker
-	let error_line
+  // Code displayed
+  let code
+
+  // Current file type
+  let editorFileType
+
+  // State for lifecycle management
+  let firstUpdate = true
+  let mounted = false
   let destroyed = false
+  let updatingExternally = false
 
-	$: if (editor && w && h) {
-		editor.refresh();
-	}
+  // Stuff related to 'markers' and errors (not sure what this does)
+  // let marker
+  // let errorLine
+  // let previousErrorLine
 
-	$: {
-		if (marker) marker.clear();
+  // Editor
+  let editor
 
-		if (errorLoc) {
-			const line = errorLoc.line - 1;
-			const ch = errorLoc.column;
+  // Set destroyed to true when component is destroyed
+  onMount(async () => {
+    editorFileType = currentFile.type
+    await createEditor()
+    updateExternal()
 
-			marker = editor.markText({ line, ch }, { line, ch: ch + 1 }, {
-				className: 'error-loc'
-			});
+    mounted = true
 
-			error_line = line;
-		} else {
-			error_line = null;
-		}
-	}
-
-	let previous_error_line;
-	$: if (editor) {
-		if (previous_error_line != null) {
-			editor.removeLineClass(previous_error_line, 'wrap', 'error-line')
-		}
-
-		if (error_line && (error_line !== previous_error_line)) {
-			editor.addLineClass(error_line, 'wrap', 'error-line');
-			previous_error_line = error_line;
-		}
-	}
-
-	onMount(() => {
 		return () => {
 			destroyed = true;
-			if (editor) editor.toTextArea();
+			if (editor) editor.toTextArea()
 		}
-	});
+  })
 
-	let first = true;
-
-	async function createEditor(mode) {
-		if (destroyed || !CodeMirror) return
+  // Convenience function to create editors
+  async function createEditor () {
+    if (destroyed) return
 
 		if (editor) editor.toTextArea()
 
     // Creating a text editor is a lot of work, so we yield
 		// the main thread for a moment. This helps reduce jank
-		if (first) await sleep(50)
+		if (firstUpdate) await sleep(50)
 
 		if (destroyed) return
 
-    const options = createCodeMirrorOptions(
+    const options = createCodemirrorOptions(
       lineNumbers,
-      mode,
+      editorFileType,
       readonly,
       tab
     )
@@ -129,17 +74,68 @@
 		editor = CodeMirror.fromTextArea(textArea, options);
 
 		editor.on('change', instance => {
-			if (!updating_externally) {
-				const value = instance.getValue();
-				dispatch('change', { value });
+      // Skip dispatch if the update is external
+      // Avoids infinite loop
+			if (!updatingExternally) {
+        const newCode = instance.getValue()
+				dispatch('change', newCode)
 			}
-		});
+		})
 
-		if (first) await sleep(50);
-		editor.refresh();
+    if (firstUpdate) await sleep(50)
 
-		first = false;
-	}
+		editor.refresh()
+
+		firstUpdate = false
+  }
+
+  // Handle external changes to current file
+  $: {
+    if (mounted) updateExternal(currentFile)
+  }
+
+  async function updateExternal () {
+    updatingExternally = true
+            
+    if (editorFileType !== currentFile.type) {
+      editorFileType = currentFile.type
+      await createEditor()
+    }
+
+    code = currentFile.source
+    editor.setValue(code)
+
+    updatingExternally = false
+  }
+
+  // Something with the errors and markers again
+  // $: {
+	// 	if (marker) marker.clear()
+
+	// 	if (errorLoc) {
+	// 		const line = errorLoc.line - 1
+	// 		const ch = errorLoc.column
+
+	// 		marker = editor.markText({ line, ch }, { line, ch: ch + 1 }, {
+	// 			className: 'error-loc'
+	// 		})
+
+	// 		errorLine = line
+	// 	} else {
+	// 		errorLine = null
+	// 	}
+	// }
+
+	// $: if (editor) {
+	// 	if (previousErrorLine !== null) {
+	// 		editor.removeLineClass(previousErrorLine, 'wrap', 'error-line')
+	// 	}
+
+	// 	if (errorLine && (errorLine !== previousErrorLine)) {
+	// 		editor.addLineClass(errorLine, 'wrap', 'error-line')
+	// 		previousErrorLine = errorLine
+	// 	}
+	// }
 </script>
 
 <style>
@@ -184,35 +180,11 @@
 	textarea {
 		visibility: hidden;
 	}
-
-	/* pre {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		border: none;
-		padding: 4px 4px 4px 60px;
-		resize: none;
-		font-family: var(--font-mono);
-		font-size: 13px;
-		line-height: 1.7;
-		user-select: none;
-		pointer-events: none;
-		color: #ccc;
-		tab-size: 2;
-		-moz-tab-size: 2;
-	}
-
-	.flex pre {
-		padding: 0 0 0 4px;
-		height: auto;
-	} */
 </style>
 
-<div class='codemirror-container' class:flex bind:offsetWidth={w} bind:offsetHeight={h}>
+<!-- <div class='codemirror-container' class:flex bind:offsetWidth={w} bind:offsetHeight={h}> -->
+<div class="codemirror-container" class:flex>
 
-	<!-- svelte-ignore a11y-positive-tabindex -->
 	<textarea
 		tabindex='2'
 		bind:this={textArea}
@@ -220,13 +192,4 @@
 		value={code}
 	/>
 
-	<!-- {#if !CodeMirror}
-		<pre style="position: absolute; left: 0; top: 0">
-      {code}
-    </pre>
-
-		<div style="position: absolute; width: 100%; bottom: 0">
-			<Message kind='info'>loading editor...</Message>
-    </div>
-	{/if} -->
 </div>

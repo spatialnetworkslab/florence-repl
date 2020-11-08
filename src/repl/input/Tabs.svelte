@@ -1,32 +1,28 @@
 <script>
-	import { createEventDispatcher } from 'svelte'
-
 	export let replFiles
-	export let currentFileId
-  
-  const dispatch = createEventDispatcher()
+	export let currentFileName
 </script>
 
 <ul>
 
-	{#each replFiles as { name, type, id }}
+	{#each Object.keys(replFiles) as fileName}
 
 		<li 
-      class:active={id === currentFileId} 
-      on:click={() => dispatch('select', id)}
+      class:active={currentFileName === fileName} 
+      on:click={() => (currentFileName = fileName)}
     >
-			{name}.{type}
+			{fileName}
 		</li>
 
 	{/each}
 
-	<li>
+	<!-- <li>
     <button 
       on:click={() => dispatch('new')}
     >
       +
     </button>
-  </li>
+  </li> -->
 </ul>
 
 <style>

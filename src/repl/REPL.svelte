@@ -2,7 +2,8 @@
 	import Input from './input/Input.svelte'
 	import Output from './output/Output.svelte'
 
-	export let replFiles = []
+  export let replFiles
+  export let currentFileName
   
   const bundler = new Worker('./bundler.js')
 
@@ -22,6 +23,12 @@
 </script>
 
 <main>
-	<Input bind:replFiles />
+	
+  <Input 
+    bind:replFiles 
+    bind:currentFileName
+  />
+
 	<Output {bundled} />
+
 </main>

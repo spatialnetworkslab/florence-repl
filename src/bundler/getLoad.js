@@ -1,9 +1,9 @@
 import fetchIfUncached from './fetchPackage.js'
 
-export default function (componentLookup, dependencyLookup) {
+export default function (fileLookup, dependencyLookup) {
   return async function load (id) {
-    if (id in componentLookup) {
-      return componentLookup[id].source
+    if (id in fileLookup) {
+      return fileLookup[id].source
     }
 
     if (id in dependencyLookup) {

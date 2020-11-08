@@ -6,20 +6,22 @@ import getTransform from './getTransform.js'
 
 import dependencyLookup from '../dependencies'
 
-const componentLookup = {}
+const fileLookup = {}
 
-function generateComponentLookup (components) {
-  components.forEach(component => {
-    componentLookup[`./${component.name}.${component.type}`] = component
-  })
+function generateFileLookup (replFiles) {
+  for (const fileName in replFiles) {
+    fileLookup[`./${fileName}`] = replFiles[fileName]
+  }
 }
 
 self.addEventListener(
   'message',
   async event => {
-    generateComponentLookup(event.data.replFiles)
+    generateFileLookup(event.data.replFiles)
 
     let cache = event.data.cache
+
+    console.log(event.data.replFiles)
 
     const bundle = await rollup.rollup({
       input: './App.svelte',
@@ -27,8 +29,8 @@ self.addEventListener(
       plugins: [
         {
           name: 'repl-plugin',
-          resolveId: getResolveId(componentLookup, dependencyLookup),
-          load: getLoad(componentLookup, dependencyLookup),
+          resolveId: getResolveId(fileLookup, dependencyLookup),
+          load: getLoad(fileLookup, dependencyLookup),
           transform: getTransform()
         }
       ]

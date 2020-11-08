@@ -12,7 +12,7 @@ for(var t={},s="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
 
 var CDN_URL = 'https://unpkg.com/';
 
-function getResolveId (componentLookup, dependencyLookup) {
+function getResolveId (fileLookup, dependencyLookup) {
   return function resolveId (importee, importer) {
     // import x from 'svelte'
     if (importee === 'svelte') return `${CDN_URL}/svelte/index.mjs`
@@ -30,8 +30,8 @@ function getResolveId (componentLookup, dependencyLookup) {
       return `${resolved}/index.mjs`
     }
 
-    // local repl components
-    if (importee in componentLookup) return importee
+    // local repl files
+    if (importee in fileLookup) return importee
 
     // local dependencies
     if (importee in dependencyLookup) return importee
@@ -77,10 +77,10 @@ async function fetchIfUncached (url) {
   return promise
 }
 
-function getLoad (componentLookup, dependencyLookup) {
+function getLoad (fileLookup, dependencyLookup) {
   return async function load (id) {
-    if (id in componentLookup) {
-      return componentLookup[id].source
+    if (id in fileLookup) {
+      return fileLookup[id].source
     }
 
     if (id in dependencyLookup) {
@@ -132,20 +132,22 @@ var dependencyLookup = {
   '@snlab/florence-datacontainer': exportDefault(DataContainer)
 };
 
-const componentLookup = {};
+const fileLookup = {};
 
-function generateComponentLookup (components) {
-  components.forEach(component => {
-    componentLookup[`./${component.name}.${component.type}`] = component;
-  });
+function generateFileLookup (replFiles) {
+  for (const fileName in replFiles) {
+    fileLookup[`./${fileName}`] = replFiles[fileName];
+  }
 }
 
 self.addEventListener(
   'message',
   async event => {
-    generateComponentLookup(event.data.replFiles);
+    generateFileLookup(event.data.replFiles);
 
     let cache = event.data.cache;
+
+    console.log(event.data.replFiles);
 
     const bundle = await Fo({
       input: './App.svelte',
@@ -153,8 +155,8 @@ self.addEventListener(
       plugins: [
         {
           name: 'repl-plugin',
-          resolveId: getResolveId(componentLookup, dependencyLookup),
-          load: getLoad(componentLookup, dependencyLookup),
+          resolveId: getResolveId(fileLookup, dependencyLookup),
+          load: getLoad(fileLookup, dependencyLookup),
           transform: getTransform()
         }
       ]
