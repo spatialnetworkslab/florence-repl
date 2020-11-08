@@ -26,12 +26,13 @@ export default function (fileLookup) {
 
     // florence
     if (importee === '@snlab/florence') {
-      return `${SNLAB_URL}/florence@HEAD/src/index.js`
+      // return `${SNLAB_URL}/florence@HEAD/src/index.js`
+      return `${SNLAB_URL}/florence@d9b766574c3c60164110878a049c956002c50e84/dist/index.mjs`
     }
 
     // DataContainer
     if (importee === '@snlab/florence-datacontainer') {
-      return `${SNLAB_URL}/florence-datacontainer@HEAD/src/index.js`
+      return `${SNLAB_URL}/florence-datacontainer@HEAD/dist/florence-datacontainer.esm.js`
     }
 
     // relative imports from a remote package
