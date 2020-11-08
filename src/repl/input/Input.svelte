@@ -6,7 +6,7 @@
   export let currentFileName
 
   function updateCurrentFile (newCode) {
-    replFiles[currentFileName].source = newCode
+    replFiles[currentFileName].source = newCode.detail
     replFiles = replFiles // needed for reactivity
   }
 </script>
