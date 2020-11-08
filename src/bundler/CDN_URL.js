@@ -1,1 +1,1 @@
-export default 'https://unpkg.com/'
+export default 'https://unpkg.com'

@@ -1,9 +1,10 @@
 import CDN_URL from './CDN_URL.js'
+import fetchIfUncached from './fetchPackage.js'
 
 const SNLAB_URL = 'https://cdn.jsdelivr.net/gh/spatialnetworkslab'
 
-export default function (fileLookup, dependencyLookup) {
-  return function resolveId (importee, importer) {
+export default function (fileLookup) {
+  return async function resolveId (importee, importer) {
     // import x from 'svelte'
     if (importee === 'svelte') return `${CDN_URL}/svelte/index.mjs`
 
@@ -23,17 +24,14 @@ export default function (fileLookup, dependencyLookup) {
     // local repl files
     if (importee in fileLookup) return importee
 
-    // local dependencies
-    if (importee in dependencyLookup) return importee
-
     // florence
     if (importee === '@snlab/florence') {
-      return `${SNLAB_URL}/florence/src/index.js`
+      return `${SNLAB_URL}/florence@HEAD/src/index.js`
     }
 
     // DataContainer
     if (importee === '@snlab/florence-datacontainer') {
-      return `${SNLAB_URL}/florence-datacontainer/src/index.js`
+      return `${SNLAB_URL}/florence-datacontainer@HEAD/src/index.js`
     }
 
     // relative imports from a remote package
@@ -41,15 +39,15 @@ export default function (fileLookup, dependencyLookup) {
 
     // bare named module imports (importing an npm package)
     // get the package.json and load it into memory
-    // const url = `${CDN_URL}/${importee}`
-    // const pkgUrl = `${url}/package.json`
-    // const pkg = JSON.parse(await fetchPackage(pkgUrl))
+    const url = `${CDN_URL}/${importee}`
+    const pkgUrl = `${url}/package.json`
+    const pkg = JSON.parse(await fetchIfUncached(pkgUrl))
 
     // get an entry point from the pkg.json - first try svelte, then modules, then main
-    // if (pkg.svelte || pkg.module || pkg.main) {
-    //   use the above url minus `/package.json` to resolve the URL
-    //   return new URL(pkg.svelte || pkg.module || pkg.main, `${url}/`).href;
-    // }
+    if (pkg.svelte || pkg.module || pkg.main) {
+      // use the above url minus `/package.json` to resolve the URL
+      return new URL(pkg.svelte || pkg.module || pkg.main, `${url}/`).href;
+    }
 
     throw new Error(`Invalid import '${importee}' in ${importer}`)
   }

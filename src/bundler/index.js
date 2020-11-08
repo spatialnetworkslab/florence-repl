@@ -4,8 +4,6 @@ import getResolveId from './getResolveId.js'
 import getLoad from './getLoad.js'
 import getTransform from './getTransform.js'
 
-import dependencyLookup from '../dependencies'
-
 const fileLookup = {}
 
 function generateFileLookup (replFiles) {
@@ -27,8 +25,8 @@ self.addEventListener(
       plugins: [
         {
           name: 'repl-plugin',
-          resolveId: getResolveId(fileLookup, dependencyLookup),
-          load: getLoad(fileLookup, dependencyLookup),
+          resolveId: getResolveId(fileLookup),
+          load: getLoad(fileLookup),
           transform: getTransform()
         }
       ]
