@@ -1,4 +1,12 @@
 const fetchCache = new Map()
+
+// const fetchOptions = {
+//   mode: 'cors',
+//   headers: {
+//     'Access-Control-Allow-Origin': '*'
+//   }
+// }
+
 export default async function fetchIfUncached (url) {
   if (fetchCache.has(url)) {
     return fetchCache.get(url)

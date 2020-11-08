@@ -24,8 +24,13 @@ export default function (fileLookup, dependencyLookup) {
     // local dependencies
     if (importee in dependencyLookup) return importee
 
+    // florence
+    if (importee === '@snlab/florence') {
+      return 'https://cdn.jsdelivr.net/gh/spatialnetworkslab/florence/src/index.js'
+    }
+
     // relative imports from a remote package
-    // if (importee.startsWith('.')) return new URL(importee, importer).href
+    if (importee.startsWith('.')) return new URL(importee, importer).href
 
     // bare named module imports (importing an npm package)
     // get the package.json and load it into memory

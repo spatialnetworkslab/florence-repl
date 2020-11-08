@@ -36,8 +36,13 @@ function getResolveId (fileLookup, dependencyLookup) {
     // local dependencies
     if (importee in dependencyLookup) return importee
 
+    // florence
+    if (importee === '@snlab/florence') {
+      return 'https://cdn.jsdelivr.net/gh/spatialnetworkslab/florence/src/index.js'
+    }
+
     // relative imports from a remote package
-    // if (importee.startsWith('.')) return new URL(importee, importer).href
+    if (importee.startsWith('.')) return new URL(importee, importer).href
 
     // bare named module imports (importing an npm package)
     // get the package.json and load it into memory
@@ -56,6 +61,14 @@ function getResolveId (fileLookup, dependencyLookup) {
 }
 
 const fetchCache = new Map();
+
+// const fetchOptions = {
+//   mode: 'cors',
+//   headers: {
+//     'Access-Control-Allow-Origin': '*'
+//   }
+// }
+
 async function fetchIfUncached (url) {
   if (fetchCache.has(url)) {
     return fetchCache.get(url)
@@ -79,6 +92,8 @@ async function fetchIfUncached (url) {
 
 function getLoad (fileLookup, dependencyLookup) {
   return async function load (id) {
+    console.log(id);
+
     if (id in fileLookup) {
       return fileLookup[id].source
     }

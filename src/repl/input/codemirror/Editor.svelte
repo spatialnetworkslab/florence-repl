@@ -1,6 +1,6 @@
 <script>
   import CodeMirror from './codemirror.js'
-  import { onMount, createEventDispatcher, tick } from 'svelte'
+  import { onMount, createEventDispatcher } from 'svelte'
   import { createCodemirrorOptions } from './createCodemirrorOptions.js'
   import { sleep } from '../../../utils/sleep.js'
   
@@ -18,9 +18,6 @@
   // Reference to <textarea> HTML element
   let textArea
 
-  // Current file type
-  let editorFileType
-
   // State for lifecycle management
   let firstUpdate = true
   let mounted = false
@@ -35,9 +32,16 @@
   // Editor
   let editor
 
+  // Store current type and state to avoid unnecessary updates
+  let code
+  let type
+
+  // Cursor position
+  let cursorPosition = { line: 0, ch: 0 }
+
   // Set destroyed to true when component is destroyed
   onMount(async () => {
-    editorFileType = currentFile.type
+    type = currentFile.type
     await createEditor()
     updateExternal()
 
@@ -63,19 +67,24 @@
 
     const options = createCodemirrorOptions(
       lineNumbers,
-      editorFileType,
+      type,
       readonly,
       tab
     )
 
 		editor = CodeMirror.fromTextArea(textArea, options);
 
+    // if text in editor changes...
 		editor.on('change', instance => {
       // Skip dispatch if the update is external
       // Avoids infinite loop
 			if (!updatingExternally) {
         const newCode = instance.getValue()
-				dispatch('change', newCode)
+        
+        if (newCode !== code) {
+          code = newCode
+          dispatch('change', newCode)
+        }
 			}
 		})
 
@@ -94,12 +103,15 @@
   async function updateExternal () {
     updatingExternally = true
             
-    if (editorFileType !== currentFile.type) {
-      editorFileType = currentFile.type
+    if (type !== currentFile.type) {
+      type = currentFile.type
       await createEditor()
     }
 
-    editor.setValue(currentFile.source)
+    if (code !== currentFile.source) {
+      code = currentFile.source
+      editor.setValue(currentFile.source)
+    }
 
     updatingExternally = false
   }

@@ -1,13 +1,15 @@
 <script>
-  import Tabs from './Tabs.svelte'
+  import { tick } from 'svelte'
   import Editor from './codemirror/Editor.svelte'
+  import Tabs from './Tabs.svelte'
 
   export let replFiles
   export let currentFileName
 
+  $: currentFile = replFiles[currentFileName]
+
   function updateCurrentFile (newCode) {
     replFiles[currentFileName].source = newCode.detail
-    replFiles = replFiles // needed for reactivity
   }
 </script>
 
@@ -19,7 +21,7 @@
   />
 
 	<Editor 
-    currentFile={replFiles[currentFileName]}
+    {currentFile}
     on:change={updateCurrentFile}
   />
 
