@@ -4,7 +4,7 @@
 
 	export let replFiles
   
-  let textarea
+  let editor
   let currentFileId
 
 	function getMaxId (replFiles) {
@@ -23,19 +23,29 @@
 		})
 
 		currentFileId = id
-		textarea.focus()
+		editor.focus()
 	}
 
   $: currentFileIndex = replFiles.findIndex(({ id }) => id === currentFileId)
-  $: currentCode = replFiles[currentFileId].source
+  $: currentFile = replFiles[currentFileId]
+  $: currentCode = currentFile.source
+
+  $: {
+    editor.set(currentCode)
+  }
 </script>
 
 <section>
+
 	<Tabs
 		{replFiles}
 		{currentFileId}
 		on:select={id => (currentFileId = id)}
 		on:new={newComponent}
   />
-	<Editor bind:this={textarea} />
+
+	<Editor 
+    bind:this={editor}
+  />
+
 </section>

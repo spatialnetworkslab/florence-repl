@@ -1,7 +1,7 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte'
   import CodeMirror from './codemirror.js'
-  import MODES from './MODES.js'
+  import { sleep } from '../../utils/sleep.js'
 	// import Message from './Message.svelte'
 
 	const dispatch = createEventDispatcher()
@@ -12,10 +12,7 @@
 	export let lineNumbers = true
 	export let tab = true
 
-	// We have to expose set and update methods, rather
-	// than making this state-driven through props,
-	// because it's difficult to update an editor
-	// without resetting scroll otherwise
+	// Component methods
 	export async function set(new_code, new_mode) {
 		if (new_mode !== mode) {
 			await createEditor(mode = new_mode);
@@ -57,8 +54,6 @@
 		if (editor) editor.clearHistory();
   }
   
-  let w
-	let h
 	let code = ''
 	let mode
 
@@ -68,10 +63,6 @@
 	let marker
 	let error_line
   let destroyed = false
-
-	$: if (editor && w && h) {
-		editor.refresh();
-	}
 
 	$: {
 		if (marker) marker.clear();
@@ -142,10 +133,6 @@
 		editor.refresh();
 
 		first = false;
-	}
-
-	function sleep(ms) {
-		return new Promise(fulfil => setTimeout(fulfil, ms));
 	}
 </script>
 
