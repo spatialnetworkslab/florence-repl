@@ -2,8 +2,6 @@ import fetchIfUncached from './fetchPackage.js'
 
 export default function (fileLookup, dependencyLookup) {
   return async function load (id) {
-    console.log(id)
-
     if (id in fileLookup) {
       return fileLookup[id].source
     }

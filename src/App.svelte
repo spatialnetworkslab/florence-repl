@@ -1,13 +1,7 @@
 <script>
   import REPL from './repl/REPL.svelte'
+  import appSource from './appSource.js'
 
-  const appSource = `<script>
-  import Component from './Component1.svelte'
-  import { Graphic } from '@snlab/florence'
-<\/script>
-
-<Component />
-`
   const replFiles = {
     'App.svelte': {
       name: 'App',
