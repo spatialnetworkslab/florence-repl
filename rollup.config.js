@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
 import { string } from 'rollup-plugin-string'
+import css from 'rollup-plugin-css-only'
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -48,6 +49,9 @@ export default [
           css.write('bundle.css')
         }
       }),
+
+      // For importing .css files
+      css({ output: 'bundle-imported.css' }),
 
       // If you have external dependencies installed from
       // npm, you'll most likely need these plugins. In

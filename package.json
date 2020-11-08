@@ -18,6 +18,7 @@
     "eslint-plugin-standard": "^4.0.2",
     "eslint-plugin-svelte3": "^2.7.3",
     "rollup": "^2.3.4",
+    "rollup-plugin-css-only": "^2.1.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-svelte": "^6.0.0",
