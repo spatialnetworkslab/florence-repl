@@ -1,5 +1,7 @@
 import CDN_URL from './CDN_URL.js'
 
+const SNLAB_URL = 'https://cdn.jsdelivr.net/gh/spatialnetworkslab'
+
 export default function (fileLookup, dependencyLookup) {
   return function resolveId (importee, importer) {
     // import x from 'svelte'
@@ -26,7 +28,12 @@ export default function (fileLookup, dependencyLookup) {
 
     // florence
     if (importee === '@snlab/florence') {
-      return 'https://cdn.jsdelivr.net/gh/spatialnetworkslab/florence/src/index.js'
+      return `${SNLAB_URL}/florence/src/index.js`
+    }
+
+    // DataContainer
+    if (importee === '@snlab/florence-datacontainer') {
+      return `${SNLAB_URL}/florence-datacontainer/src/index.js`
     }
 
     // relative imports from a remote package

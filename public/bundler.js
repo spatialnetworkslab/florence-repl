@@ -12,6 +12,8 @@ for(var t={},s="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
 
 var CDN_URL = 'https://unpkg.com/';
 
+const SNLAB_URL = 'https://cdn.jsdelivr.net/gh/spatialnetworkslab';
+
 function getResolveId (fileLookup, dependencyLookup) {
   return function resolveId (importee, importer) {
     // import x from 'svelte'
@@ -38,7 +40,12 @@ function getResolveId (fileLookup, dependencyLookup) {
 
     // florence
     if (importee === '@snlab/florence') {
-      return 'https://cdn.jsdelivr.net/gh/spatialnetworkslab/florence/src/index.js'
+      return `${SNLAB_URL}/florence/src/index.js`
+    }
+
+    // DataContainer
+    if (importee === '@snlab/florence-datacontainer') {
+      return `${SNLAB_URL}/florence-datacontainer/src/index.js`
     }
 
     // relative imports from a remote package
@@ -61,13 +68,6 @@ function getResolveId (fileLookup, dependencyLookup) {
 }
 
 const fetchCache = new Map();
-
-// const fetchOptions = {
-//   mode: 'cors',
-//   headers: {
-//     'Access-Control-Allow-Origin': '*'
-//   }
-// }
 
 async function fetchIfUncached (url) {
   if (fetchCache.has(url)) {
@@ -92,8 +92,6 @@ async function fetchIfUncached (url) {
 
 function getLoad (fileLookup, dependencyLookup) {
   return async function load (id) {
-    console.log(id);
-
     if (id in fileLookup) {
       return fileLookup[id].source
     }
