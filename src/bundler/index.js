@@ -17,7 +17,7 @@ function generateComponentLookup (components) {
 self.addEventListener(
   'message',
   async event => {
-    generateComponentLookup(event.data.components)
+    generateComponentLookup(event.data.replFiles)
 
     let cache = event.data.cache
 
@@ -38,10 +38,10 @@ self.addEventListener(
 
     // a touch longwinded but output contains an array of chunks
     // we are not code-splitting, so we only have a single chunk
-    const compiled = (await bundle.generate({ format: 'esm' }))
+    const bundled = (await bundle.generate({ format: 'esm' }))
       .output[0]
       .code
 
-    self.postMessage({ compiled, cache })
+    self.postMessage({ bundled, cache })
   }
 )

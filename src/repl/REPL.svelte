@@ -4,24 +4,24 @@
 
 	export let replFiles = []
   
-  const compiler = new Worker('./compiler.js')
+  const bundler = new Worker('./bundler.js')
 
-	let compiled
+	let bundled
 	let cache
 
 	compiler.addEventListener('message', event => {
-		compiled = event.data.compiled
+		bundled = event.data.bundled
 		cache = event.data.cache
 	})
 
-	function compile (replFiles) {
-		compiler.postMessage({replFiles, cache})
+	function bundle (replFiles) {
+		bundler.postMessage({ replFiles, cache })
 	}
 
-	$: compile(replFiles)
+	$: bundle(replFiles)
 </script>
 
 <main>
 	<Input bind:replFiles />
-	<Output {compiled} />
+	<Output {bundled} />
 </main>

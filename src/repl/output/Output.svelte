@@ -1,13 +1,13 @@
 <script>
-	export let compiled
+	export let bundled
 
 	let iframe
 
-	function update(code) {
+	function update (code) {
 		iframe.contentWindow.postMessage(code, "*")
 	}
 
-	$: iframe && compiled && update(compiled)
+	$: iframe && bundled && update(bundled)
 
 	const srcdoc = `
 <!doctype html>
@@ -39,4 +39,10 @@
 `
 </script>
 
-<section><iframe title="Rendered REPL" bind:this={iframe} {srcdoc} /></section>
+<section>
+  <iframe 
+    title="Rendered REPL"
+    bind:this={iframe}
+    {srcdoc} 
+  />
+</section>

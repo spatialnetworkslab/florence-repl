@@ -79,12 +79,12 @@ export default [
 
   // Web worker config
   {
-    input: 'src/compiler/compiler.js',
+    input: 'src/bundler/index.js',
     output: {
       sourcemap: true,
       format: 'esm',
       name: 'app',
-      file: 'public/compiler.js'
+      file: 'public/bundler.js'
     },
     plugins: [
       resolve({
