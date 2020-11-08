@@ -1,7 +1,7 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte'
   import CodeMirror from './codemirror.js'
-  import { sleep } from '../../utils/sleep.js'
+  import { sleep } from '../../../utils/sleep.js'
 	// import Message from './Message.svelte'
 
 	const dispatch = createEventDispatcher()
@@ -54,6 +54,8 @@
 		if (editor) editor.clearHistory();
   }
   
+  let w
+	let h
 	let code = ''
 	let mode
 
@@ -63,6 +65,10 @@
 	let marker
 	let error_line
   let destroyed = false
+
+	$: if (editor && w && h) {
+		editor.refresh();
+	}
 
 	$: {
 		if (marker) marker.clear();

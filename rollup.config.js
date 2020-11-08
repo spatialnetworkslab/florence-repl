@@ -51,7 +51,7 @@ export default [
       }),
 
       // For importing .css files
-      css({ output: 'bundle-imported.css' }),
+      css({ output: 'public/build/bundle-imported.css' }),
 
       // If you have external dependencies installed from
       // npm, you'll most likely need these plugins. In
