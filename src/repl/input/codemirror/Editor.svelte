@@ -10,7 +10,7 @@
 
   // Option props
 	export let readonly = false
-	export let errorLoc = null
+	// export let errorLoc = null
 	export let flex = false
 	export let lineNumbers = true
   export let tab = true
@@ -146,6 +146,7 @@
 		border: none;
 		line-height: 1.5;
 		overflow: hidden;
+    text-align: left;
 	}
 
 	.codemirror-container :global(.CodeMirror) {

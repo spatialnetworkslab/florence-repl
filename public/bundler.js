@@ -147,8 +147,6 @@ self.addEventListener(
 
     let cache = event.data.cache;
 
-    console.log(event.data.replFiles);
-
     const bundle = await Fo({
       input: './App.svelte',
       cache,

@@ -21,8 +21,6 @@ self.addEventListener(
 
     let cache = event.data.cache
 
-    console.log(event.data.replFiles)
-
     const bundle = await rollup.rollup({
       input: './App.svelte',
       cache,
