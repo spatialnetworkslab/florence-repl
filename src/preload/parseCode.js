@@ -1,11 +1,6 @@
 import generateDummyCode from './generateDummyCode.js'
 
 export default function parseCode (minifiedCode, packageMetadata) {
-  if (packageMetadata.format === 'esm') return parseESM(minifiedCode, packageMetadata)
-  // if (packageMetadata.format === 'mjs') return parseMJS(minifiedCode, packageMetadata)
-}
-
-function parseESM (minifiedCode, packageMetadata) {
   const newPackageMetadata = Object.assign({}, packageMetadata)
 
   const [codeBodyUntrimmed, exportValueUntrimmed] = minifiedCode.split('export')
@@ -50,24 +45,11 @@ function parseExportsObject (exportValue) {
   return exportsObject
 }
 
-// function parseMJS (minifiedCode, packageMetadata) {
-//   const newPackageMetadata = Object.assign({}, packageMetadata)
-
-//   const [codeBody, exportsObject] = minifiedCode.split('export')
-//   const exports = getExportsMJS(exportsObject)
-
-//   newPackageMetadata.exports = exports
-//   newPackageMetadata.iife = wrapIIFE(codeBody, exports)
-//   newPackageMetadata.dummyCode = generateDummyCode(newPackageMetadata)
-
-//   return newPackageMetadata
-// }
-
 function wrapIIFE (code, newPackageMetadata) {
   const { exportValue, exportsObject } = newPackageMetadata
 
   const returnValue = exportValue.startsWith('default ')
-    ? exportValue.substr(8, exportValue.length)
+    ? wrapObj(exportValue)
     : asString(exportsObject)
 
   return '(function() {\n' +
@@ -88,4 +70,10 @@ function asString (exportsObject) {
   str += ' }'
 
   return str
+}
+
+function wrapObj (exportValue) {
+  const exportName = exportValue.substr(8, exportValue.length)
+
+  return `{ ${exportName}: ${exportName} }`
 }

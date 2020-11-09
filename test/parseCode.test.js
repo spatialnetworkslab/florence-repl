@@ -1,7 +1,7 @@
 import parseCode from '../src/preload/parseCode.js'
 
 describe('parseCode', () => {
-  it('parses esm packages (exports object)', () => {
+  it('parses packages with exports object (export { y, z })', () => {
     const minifiedCode = 'function x() { return \'bla\' }\n' +
       'function y() { return x() }\n' +
       'function z() { return 123 }\n' +
@@ -10,14 +10,12 @@ describe('parseCode', () => {
 
     const packageMetadata = {
       name: 'some-package',
-      url: '',
-      format: 'esm'
+      url: ''
     }
 
     const expectedResult = {
       name: 'some-package',
       url: '',
-      format: 'esm',
       exportValue: '{ y, z }',
       exportsObject: { y: 'y', z: 'z' },
       iife: '(function() {\n' +
@@ -35,7 +33,7 @@ describe('parseCode', () => {
     expect(parseCode(minifiedCode, packageMetadata)).toEqual(expectedResult)
   })
 
-  it('parses esm packages (exports object using { a as b } syntax)', () => {
+  it('parses packages with exports object using { a as b } syntax', () => {
     const minifiedCode = 'function x() { return \'bla\' }\n' +
       'function y() { return x() }\n' +
       'function z() { return 123 }\n' +
@@ -44,14 +42,12 @@ describe('parseCode', () => {
 
     const packageMetadata = {
       name: 'some-package',
-      url: '',
-      format: 'esm'
+      url: ''
     }
 
     const expectedResult = {
       name: 'some-package',
       url: '',
-      format: 'esm',
       exportValue: '{ y as y1, z }',
       exportsObject: { y1: 'y', z: 'z' },
       iife: '(function() {\n' +
@@ -69,7 +65,7 @@ describe('parseCode', () => {
     expect(parseCode(minifiedCode, packageMetadata)).toEqual(expectedResult)
   })
 
-  it('parses esm packages (default export)', () => {
+  it('parses packages with default export', () => {
     const minifiedCode = 'function x() { return \'bla\' }\n' +
       'function y() { return x() }\n' +
       '\n' +
@@ -77,19 +73,17 @@ describe('parseCode', () => {
 
     const packageMetadata = {
       name: 'some-package',
-      url: '',
-      format: 'esm'
+      url: ''
     }
 
     const expectedResult = {
       name: 'some-package',
       url: '',
-      format: 'esm',
       exportValue: 'default y',
       iife: '(function() {\n' +
         'function x() { return \'bla\' }\n' +
         'function y() { return x() }\n' +
-        'return y\n' +
+        'return { y: y }\n' +
         '})()',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
         'export default const y = \'y\'\n' +
