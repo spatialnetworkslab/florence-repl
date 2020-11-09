@@ -35,6 +35,11 @@ export default function (fileLookup) {
       return `${SNLAB_URL}/florence-datacontainer@HEAD/dist/florence-datacontainer.esm.js`
     }
 
+    // test-dependency
+    if (importee === 'my-test-dependency') {
+      return importee
+    }
+
     // relative imports from a remote package
     if (importee.startsWith('.')) return new URL(importee, importer).href
 

@@ -5,6 +5,8 @@ import getResolveId from './getResolveId.js'
 import getLoad from './getLoad.js'
 import getTransform from './getTransform.js'
 
+const REPLACE_CODE = 'const test = \'BOOJAH\''
+
 function generateFileLookup (replFiles) {
   const fileLookup = {}
 
@@ -20,6 +22,8 @@ let rollupCache
 self.addEventListener(
   'message',
   async event => {
+    const preloadedFilesUsed = {}
+
     const fileLookup = generateFileLookup(event.data.replFiles)
 
     const bundle = await rollup.rollup({
@@ -29,7 +33,7 @@ self.addEventListener(
         {
           name: 'repl-plugin',
           resolveId: getResolveId(fileLookup),
-          load: getLoad(fileLookup),
+          load: getLoad(fileLookup, preloadedFilesUsed),
           transform: getTransform()
         },
         json
@@ -41,10 +45,21 @@ self.addEventListener(
 
     // a touch longwinded but output contains an array of chunks
     // we are not code-splitting, so we only have a single chunk
-    const bundled = (await bundle.generate({ format: 'esm' }))
+    const _bundled = (await bundle.generate({ format: 'esm' }))
       .output[0]
       .code
 
-    self.postMessage({ bundled })
+    let bundled
+
+    if (preloadedFilesUsed['my-test-dependency']) {
+      const [codeBeforeDummy, restCode] = _bundled.split('/* @@@START_DUMMY_CODE@@@ */')
+      const [, codeAfterDummy] = restCode.split('/* @@@END_DUMMY_CODE@@@ */')
+
+      bundled = [codeBeforeDummy, REPLACE_CODE, codeAfterDummy].join('\n\n')
+    } else {
+      bundled = _bundled
+    }
+
+    self.postMessage({ bundled, preloadedFilesUsed })
   }
 )
