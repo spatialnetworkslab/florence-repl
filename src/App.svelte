@@ -1,7 +1,7 @@
 <script>
   import REPL from './repl/REPL.svelte'
   import appSource from './appSource.js'
-  import MyTestDependency from './packages/MyTestDependency.js'
+  import DataContainer from './packages/DataContainer.js'
 
   const replFiles = {
     'App.svelte': {
@@ -21,7 +21,7 @@
 
   const currentFileName = 'App.svelte'
   
-  const preload = [MyTestDependency]
+  const preload = [DataContainer]
 </script>
 
 <REPL
