@@ -1,9 +1,9 @@
 import CDN_URL from './CDN_URL.js'
 import fetchIfUncached from './fetchPackage.js'
 
-const SNLAB_URL = 'https://cdn.jsdelivr.net/gh/spatialnetworkslab'
+// const SNLAB_URL = 'https://cdn.jsdelivr.net/gh/spatialnetworkslab'
 
-export default function (fileLookup) {
+export default function (fileLookup, dummyCodePackages) {
   return async function resolveId (importee, importer) {
     // import x from 'svelte'
     if (importee === 'svelte') return `${CDN_URL}/svelte/index.mjs`
@@ -24,21 +24,8 @@ export default function (fileLookup) {
     // local repl files
     if (importee in fileLookup) return importee
 
-    // florence
-    if (importee === '@snlab/florence') {
-      // return `${SNLAB_URL}/florence@HEAD/dist/index.mjs`
-      return `${SNLAB_URL}/florence@a90efb58df17a7763dff14d3d2614c05912f6f9e/dist/index.mjs`
-    }
-
-    // DataContainer
-    if (importee === '@snlab/florence-datacontainer') {
-      return `${SNLAB_URL}/florence-datacontainer@HEAD/dist/florence-datacontainer.esm.js`
-    }
-
-    // test-dependency
-    if (importee === 'my-test-dependency') {
-      return importee
-    }
+    // preloaded packages
+    if (importee in dummyCodePackages) return importee
 
     // relative imports from a remote package
     if (importee.startsWith('.')) return new URL(importee, importer).href

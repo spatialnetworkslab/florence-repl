@@ -1,4 +1,4 @@
-import injectPreloadedCode from '../src/preload/injectPreloadedCode.js'
+import { injectPreloadedCodePackage } from '../src/preload/injectPreloadedCode.js'
 
 describe('injectPreloadedCode', () => {
   it('works with packages with exports object (export { y, z })', () => {
@@ -35,7 +35,7 @@ describe('injectPreloadedCode', () => {
     '})()\n' +
     '// Code after'
 
-    expect(injectPreloadedCode(bundled, packageMetadata)).toBe(expectedResult)
+    expect(injectPreloadedCodePackage(bundled, packageMetadata)).toBe(expectedResult)
   })
 
   it('works with packages with exports object where compiler changes names', () => {
@@ -72,7 +72,7 @@ describe('injectPreloadedCode', () => {
     '})()\n' +
     '// Code after'
 
-    expect(injectPreloadedCode(bundled, packageMetadata)).toBe(expectedResult)
+    expect(injectPreloadedCodePackage(bundled, packageMetadata)).toBe(expectedResult)
   })
 
   it('works with packages with default export', () => {
@@ -104,7 +104,7 @@ describe('injectPreloadedCode', () => {
     '})()\n' +
     '// Code after'
 
-    expect(injectPreloadedCode(bundled, packageMetadata)).toBe(expectedResult)
+    expect(injectPreloadedCodePackage(bundled, packageMetadata)).toBe(expectedResult)
   })
 
   it('works with packages with default export where compiler changes name', () => {
@@ -136,6 +136,6 @@ describe('injectPreloadedCode', () => {
     '})()\n' +
     '// Code after'
 
-    expect(injectPreloadedCode(bundled, packageMetadata)).toBe(expectedResult)
+    expect(injectPreloadedCodePackage(bundled, packageMetadata)).toBe(expectedResult)
   })
 })

@@ -1,4 +1,18 @@
-export default function injectPreloadedCode (bundled, packageMetadata) {
+export default function injectPreloadedCode (
+  _bundled,
+  usedPackages,
+  preloadedPackages
+) {
+  let bundled = _bundled
+
+  for (const packageName in usedPackages) {
+    bundled = injectPreloadedCodePackage(bundled, preloadedPackages[packageName])
+  }
+
+  return bundled
+}
+
+export function injectPreloadedCodePackage (bundled, packageMetadata) {
   const {
     codeBefore,
     transformedDummyCode,

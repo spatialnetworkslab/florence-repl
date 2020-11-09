@@ -1,7 +1,7 @@
 import fetchPackage from './fetchPackage.js'
 import parseCode from './parseCode.js'
 
-export default async function preload (packages) {
+export default async function preloadPackages (packages) {
   const preloadedPackages = {}
 
   for (const packageMetadata of packages) {
