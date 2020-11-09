@@ -1,13 +1,6 @@
 const fetchCache = new Map()
 
-// const testDependencyCode = `
-// const test = 'BOOYAH'
-// export { test as test }
-// `
-
 export default async function fetchPackage (url) {
-  // if (url === '@@TESTURL@@') return testDependencyCode
-
   if (fetchCache.has(url)) {
     return fetchCache.get(url)
   }
