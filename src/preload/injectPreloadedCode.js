@@ -13,11 +13,15 @@ export default function injectPreloadedCode (
 }
 
 export function injectPreloadedCodePackage (bundled, packageMetadata) {
+  const _bla = removeTransformedCode(bundled, packageMetadata)
+
+  if (!_bla) return bundled
+
   const {
     codeBefore,
     transformedDummyCode,
     codeAfter
-  } = removeTransformedCode(bundled, packageMetadata)
+  } = _bla
 
   const compilerRenamesObject = getCompilerRenames(transformedDummyCode, packageMetadata)
   const destructureString = getDestructureString(compilerRenamesObject)
@@ -34,6 +38,11 @@ function removeTransformedCode (bundled, packageMetadata) {
   const endTag = `/* @@END_DUMMY_CODE_${name}@@ */`
 
   const [codeBefore, restCode] = bundled.split(startTag)
+
+  if (restCode === undefined) {
+    return null
+  }
+
   const [transformedDummyCode, codeAfter] = restCode.split(endTag)
 
   return {

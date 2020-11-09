@@ -86,7 +86,8 @@ describe('parseCode', () => {
         'return { y: y }\n' +
         '})()',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
-        'export default y = \'y\'\n' +
+        'const y = \'y\'\n' +
+        'export default y\n' +
         '/* @@END_DUMMY_CODE_some-package@@ */'
     }
 
