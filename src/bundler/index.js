@@ -5,12 +5,14 @@ import getResolveId from './getResolveId.js'
 import getLoad from './getLoad.js'
 import getTransform from './getTransform.js'
 
-const fileLookup = {}
-
 function generateFileLookup (replFiles) {
+  const fileLookup = {}
+
   for (const fileName in replFiles) {
     fileLookup[`./${fileName}`] = replFiles[fileName]
   }
+
+  return fileLookup
 }
 
 let rollupCache
@@ -18,7 +20,7 @@ let rollupCache
 self.addEventListener(
   'message',
   async event => {
-    generateFileLookup(event.data.replFiles)
+    const fileLookup = generateFileLookup(event.data.replFiles)
 
     const bundle = await rollup.rollup({
       input: './App.svelte',

@@ -7,14 +7,19 @@
   
   const bundler = new Worker('./bundler.js')
 
-	let bundled
+  let bundled
+  let firstUpdate = true // hack to avoid double bundling on load
 
 	bundler.addEventListener('message', event => {
 		bundled = event.data.bundled
 	})
 
 	function bundle (replFiles) {
-		bundler.postMessage({ replFiles })
+    if (!firstUpdate) {
+      bundler.postMessage({ replFiles })
+    }
+
+    firstUpdate = false
 	}
 
 	$: bundle(replFiles)
