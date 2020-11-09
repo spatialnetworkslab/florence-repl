@@ -1,5 +1,6 @@
 const fetchCache = new Map()
-export default async function fetchIfUncached (url) {
+
+export default async function fetchPackage (url) {
   if (fetchCache.has(url)) {
     return fetchCache.get(url)
   }

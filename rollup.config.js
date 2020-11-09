@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
 import { string } from 'rollup-plugin-string'
+import css from 'rollup-plugin-css-only'
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -49,6 +50,9 @@ export default [
         }
       }),
 
+      // For importing .css files
+      css({ output: 'public/build/bundle-imported.css' }),
+
       // If you have external dependencies installed from
       // npm, you'll most likely need these plugins. In
       // some cases you'll need additional configuration -
@@ -79,12 +83,12 @@ export default [
 
   // Web worker config
   {
-    input: 'src/compiler/compiler.js',
+    input: 'src/bundler/index.js',
     output: {
       sourcemap: true,
       format: 'esm',
       name: 'app',
-      file: 'public/compiler.js'
+      file: 'public/bundler.js'
     },
     plugins: [
       resolve({

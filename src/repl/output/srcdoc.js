@@ -1,15 +1,5 @@
-<script>
-	export let compiled
-
-	let iframe
-
-	function update(code) {
-		iframe.contentWindow.postMessage(code, "*")
-	}
-
-	$: iframe && compiled && update(compiled)
-
-	const srcdoc = `
+/* eslint-disable no-tabs */
+export default `
 <!doctype html>
 <html>
 	<head>
@@ -32,11 +22,8 @@
 			window.addEventListener('message', event => {
 				update(event.data)
 			}, false)
-		<\/script>
+		</script>
 	</head>
 	<body></body>
 </html>
 `
-</script>
-
-<section><iframe title="Rendered REPL" bind:this={iframe} {srcdoc} /></section>

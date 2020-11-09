@@ -1,28 +1,68 @@
 <script>
-	import Input from './Input.svelte'
-	import Output from './Output.svelte'
+  import { onMount } from 'svelte'
 
-  const compiler = new Worker('./compiler.js')
+	import Input from './input/Input.svelte'
+	import Output from './output/Output.svelte'
 
-	export let components = []
+  import preloadPackages from '../preload/preloadPackages.js'
+  import injectPreloadedCode from '../preload/injectPreloadedCode.js'
 
-	let current = 0
-	let compiled
-	let cache
+  export let replFiles
+  export let currentFileName
+  export let preload = undefined
+  
+  let preloadedPackages
+  let dummyCodePackages = {}
 
-	compiler.addEventListener('message', event => {
-		compiled = event.data.compiled
-		cache = event.data.cache
+  onMount(async () => {
+    preloadedPackages = preload ? await preloadPackages(preload) : undefined
+
+    if (preload) {
+      for (const packageName in preloadedPackages) {
+        dummyCodePackages[packageName] = preloadedPackages[packageName].dummyCode
+      }
+    }
+
+    mounted = true
+  })
+
+  const bundler = new Worker('./bundler.js')
+
+  let bundled
+
+  // Lifecycle
+  let mounted
+
+	bundler.addEventListener('message', event => {
+		if (mounted) {
+      if (preload) {
+        bundled = injectPreloadedCode(
+          event.data.bundled,
+          event.data.preloadedPackagesUsed,
+          preloadedPackages
+        )
+      } else {
+        bundled = event.data.bundled
+      }
+    }
 	})
 
-	function compile (components) {
-		compiler.postMessage({components, cache})
+	function bundle (replFiles) {
+    if (mounted) {
+      bundler.postMessage({ replFiles, dummyCodePackages })
+    }
 	}
 
-	$: compile(components)
+	$: bundle(replFiles, mounted)
 </script>
 
 <main>
-	<Input bind:components bind:current />
-	<Output {compiled} />
+	
+  <Input 
+    bind:replFiles 
+    bind:currentFileName
+  />
+
+	<Output {bundled} />
+
 </main>

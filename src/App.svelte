@@ -1,32 +1,32 @@
 <script>
   import REPL from './repl/REPL.svelte'
+  import appSource from './appSource.js'
+  import DataContainer from './packages/DataContainer.js'
+  import florence from './packages/florence.js'
 
-  const appSource = `
-<script>
-  import Component from './Component1.svelte'
-  import DataContainer from '@snlab/florence-datacontainer'
-
-  const dc = new DataContainer({ a: [1, 2, 3] })
-  console.log(dc.column('a'))
-<\/script>
-
-<Component />
-`
-
-  let components = [
-		{
-			id: 0,
-			name: 'App',
+  const replFiles = {
+    'App.svelte': {
+      name: 'App',
 			type: 'svelte',
+      fileName: 'App.svelte',
 			source: appSource,
-		},
-		{
-			id: 1,
-			name: 'Component1',
-			type: 'svelte',
-			source: '<h1>Hello</h1>',
-		},
-	]
+    },
+    
+    'Component1.svelte': {
+      name: 'Component1',
+      type: 'svelte',
+      fileName: 'Component1.svelte',
+	    source: '<h1>Hello</h1>',
+    }
+  }
+
+  const currentFileName = 'App.svelte'
+  
+  const preload = [DataContainer, florence]
 </script>
 
-<REPL {components} />
+<REPL
+  {replFiles}
+  {currentFileName}
+  {preload}
+/>
