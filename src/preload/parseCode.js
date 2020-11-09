@@ -1,18 +1,20 @@
 import generateDummyCode from './generateDummyCode.js'
 
 export default function parseCode (minifiedCode, packageMetadata) {
-  const newPackageMetadata = Object.assign({}, packageMetadata)
-
-  const [codeBodyUntrimmed, exportValueUntrimmed] = minifiedCode.split('export')
-  const codeBody = codeBodyUntrimmed.trim()
-  const exportValue = removeSemiColon(exportValueUntrimmed.trim())
-
-  newPackageMetadata.exportValue = exportValue
-
-  if (!exportValue.startsWith('default ')) {
-    // exportValue will be something like { a, b as c }
-    newPackageMetadata.exportsObject = parseExportsObject(exportValue)
+  const newPackageMetadata = {
+    name: packageMetadata.name,
+    defaultExport: packageMetadata.defaultExport
   }
+
+  if (packageMetadata.defaultExport) {
+    newPackageMetadata.defaultName = packageMetadata.defaultName
+  }
+
+  if (!packageMetadata.defaultExport) {
+    newPackageMetadata.exportsObject = packageMetadata.exportsObject
+  }
+
+  const codeBody = packageMetadata.getCodeBody(minifiedCode).trim()
 
   newPackageMetadata.iife = wrapIIFE(codeBody, newPackageMetadata)
   newPackageMetadata.dummyCode = generateDummyCode(newPackageMetadata)
@@ -20,44 +22,11 @@ export default function parseCode (minifiedCode, packageMetadata) {
   return newPackageMetadata
 }
 
-function removeSemiColon (str) {
-  if (str.endsWith(';')) {
-    return str.substring(0, str.length - 1)
-  }
-
-  return str
-}
-
-function parseExportsObject (exportValue) {
-  const trimmed = exportValue
-    .trim()
-    .substring(0, exportValue.length - 1)
-    .substring(1, exportValue.length)
-    .trim()
-
-  const entries = trimmed
-    .split(',')
-    .map(entry => entry.trim())
-    .map(entry => entry.split(' as '))
-
-  const exportsObject = {}
-
-  for (const entry of entries) {
-    if (entry.length === 1) {
-      exportsObject[entry[0]] = entry[0]
-    } else {
-      exportsObject[entry[1]] = entry[0]
-    }
-  }
-
-  return exportsObject
-}
-
 function wrapIIFE (code, newPackageMetadata) {
-  const { exportValue, exportsObject } = newPackageMetadata
+  const { defaultExport, exportsObject, defaultName } = newPackageMetadata
 
-  const returnValue = exportValue.startsWith('default ')
-    ? wrapObj(exportValue)
+  const returnValue = defaultExport
+    ? wrapObj(defaultName)
     : asString(exportsObject)
 
   return '(function() {\n' +
@@ -80,8 +49,6 @@ function asString (exportsObject) {
   return str
 }
 
-function wrapObj (exportValue) {
-  const exportName = exportValue.substr(8, exportValue.length)
-
-  return `{ ${exportName}: ${exportName} }`
+function wrapObj (defaultName) {
+  return `{ ${defaultName}: ${defaultName} }`
 }

@@ -1,7 +1,8 @@
 <script>
   import REPL from './repl/REPL.svelte'
   import appSource from './appSource.js'
-  import DataContainer from './packages/DataContainer.js'
+  // import DataContainer from './packages/DataContainer.js'
+  import florence from './packages/florence.js'
 
   const replFiles = {
     'App.svelte': {
@@ -21,7 +22,8 @@
 
   const currentFileName = 'App.svelte'
   
-  const preload = [DataContainer]
+  // const preload = [DataContainer]
+  const preload = [florence]
 </script>
 
 <REPL

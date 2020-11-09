@@ -12,7 +12,7 @@ describe('injectPreloadedCode', () => {
     const packageMetadata = {
       name: 'some-package',
       url: '',
-      exportValue: '{ y, z }',
+      defaultExport: false,
       exportsObject: { y: 'y', z: 'z' },
       iife: '(function() {\n' +
         'function x() { return \'bla\' }\n' +
@@ -49,7 +49,7 @@ describe('injectPreloadedCode', () => {
     const packageMetadata = {
       name: 'some-package',
       url: '',
-      exportValue: '{ y, z }',
+      defaultExport: false,
       exportsObject: { y: 'y', z: 'z' },
       iife: '(function() {\n' +
         'function x() { return \'bla\' }\n' +
@@ -85,7 +85,8 @@ describe('injectPreloadedCode', () => {
     const packageMetadata = {
       name: 'some-package',
       url: '',
-      exportValue: 'default y',
+      defaultExport: true,
+      defaultName: 'y',
       iife: '(function() {\n' +
         'function x() { return \'bla\' }\n' +
         'function y() { return x() }\n' +
@@ -117,7 +118,8 @@ describe('injectPreloadedCode', () => {
     const packageMetadata = {
       name: 'some-package',
       url: '',
-      exportValue: 'default y',
+      defaultExport: true,
+      defaultName: 'y',
       iife: '(function() {\n' +
         'function x() { return \'bla\' }\n' +
         'function y() { return x() }\n' +

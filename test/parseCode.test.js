@@ -10,13 +10,18 @@ describe('parseCode', () => {
 
     const packageMetadata = {
       name: 'some-package',
-      url: ''
+      url: '',
+      getCodeBody (code) { return code.substring(0, code.length - 16) },
+      defaultExport: false,
+      exportsObject: {
+        y: 'y',
+        z: 'z'
+      }
     }
 
     const expectedResult = {
       name: 'some-package',
-      url: '',
-      exportValue: '{ y, z }',
+      defaultExport: false,
       exportsObject: { y: 'y', z: 'z' },
       iife: '(function() {\n' +
         'function x() { return \'bla\' }\n' +
@@ -42,13 +47,18 @@ describe('parseCode', () => {
 
     const packageMetadata = {
       name: 'some-package',
-      url: ''
+      url: '',
+      getCodeBody (code) { return code.substring(0, code.length - 22) },
+      defaultExport: false,
+      exportsObject: {
+        y1: 'y',
+        z: 'z'
+      }
     }
 
     const expectedResult = {
       name: 'some-package',
-      url: '',
-      exportValue: '{ y as y1, z }',
+      defaultExport: false,
       exportsObject: { y1: 'y', z: 'z' },
       iife: '(function() {\n' +
         'function x() { return \'bla\' }\n' +
@@ -73,13 +83,16 @@ describe('parseCode', () => {
 
     const packageMetadata = {
       name: 'some-package',
-      url: ''
+      url: '',
+      getCodeBody (code) { return code.substring(0, code.length - 17) },
+      defaultExport: true,
+      defaultName: 'y'
     }
 
     const expectedResult = {
       name: 'some-package',
-      url: '',
-      exportValue: 'default y',
+      defaultExport: true,
+      defaultName: 'y',
       iife: '(function() {\n' +
         'function x() { return \'bla\' }\n' +
         'function y() { return x() }\n' +
