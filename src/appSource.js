@@ -15,6 +15,9 @@ export default `
 <script>
   import Component from './Component1.svelte'
   import DataContainer from '@snlab/florence-datacontainer'
+
+  const dc = new DataContainer({ a: [1, 2, 3] })
+  console.log(dc.column('a'))
 </script>
 
 <Component />
