@@ -9,7 +9,7 @@
       name: 'App',
 			type: 'svelte',
       fileName: 'App.svelte',
-			source: appSource,
+			source: appSource.trim(),
     },
     
     'Component1.svelte': {
