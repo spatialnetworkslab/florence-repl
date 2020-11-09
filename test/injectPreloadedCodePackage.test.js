@@ -92,7 +92,7 @@ describe('injectPreloadedCode', () => {
         'return { y: y }\n' +
         '})()',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
-        'export default const y = \'y\'\n' +
+        'export default y = \'y\'\n' +
         '/* @@END_DUMMY_CODE_some-package@@ */'
     }
 
@@ -124,7 +124,7 @@ describe('injectPreloadedCode', () => {
         'return { y: y }\n' +
         '})()',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
-        'export default const y = \'y\'\n' +
+        'export default y = \'y\'\n' +
         '/* @@END_DUMMY_CODE_some-package@@ */'
     }
 

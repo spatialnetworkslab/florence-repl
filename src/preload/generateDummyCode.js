@@ -9,7 +9,7 @@ export default function generateDummyCode (packageMetadata) {
   if (exportValue.startsWith('default ')) {
     const [, exportName] = exportValue.split(' ')
 
-    dummyCode += `export default const ${exportName} = '${exportName}'\n`
+    dummyCode += `export default ${exportName} = '${exportName}'\n`
   } else {
     for (const exportName in exportsObject) {
       dummyCode += `export const ${exportName} = '${exportName}'\n`

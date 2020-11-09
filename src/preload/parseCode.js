@@ -5,7 +5,7 @@ export default function parseCode (minifiedCode, packageMetadata) {
 
   const [codeBodyUntrimmed, exportValueUntrimmed] = minifiedCode.split('export')
   const codeBody = codeBodyUntrimmed.trim()
-  const exportValue = exportValueUntrimmed.trim()
+  const exportValue = removeSemiColon(exportValueUntrimmed.trim())
 
   newPackageMetadata.exportValue = exportValue
 
@@ -18,6 +18,14 @@ export default function parseCode (minifiedCode, packageMetadata) {
   newPackageMetadata.dummyCode = generateDummyCode(newPackageMetadata)
 
   return newPackageMetadata
+}
+
+function removeSemiColon (str) {
+  if (str.endsWith(';')) {
+    return str.substring(0, str.length - 1)
+  }
+
+  return str
 }
 
 function parseExportsObject (exportValue) {

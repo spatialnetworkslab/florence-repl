@@ -8,7 +8,6 @@ export default async function preloadPackages (packages) {
     const { name, url } = packageMetadata
 
     const minifiedCode = await fetchPackage(url)
-    console.log(minifiedCode)
     preloadedPackages[name] = parseCode(minifiedCode, packageMetadata)
   }
 

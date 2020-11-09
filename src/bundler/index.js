@@ -25,6 +25,8 @@ self.addEventListener(
     const fileLookup = generateFileLookup(event.data.replFiles)
     const dummyCodePackages = event.data.dummyCodePackages
 
+    console.log('prebundle')
+
     const bundle = await rollup.rollup({
       input: './App.svelte',
       cache: rollupCache,
@@ -46,6 +48,8 @@ self.addEventListener(
       ],
       inlineDynamicImports: true
     })
+
+    console.log('postbundle')
 
     rollupCache = bundle.cache
 
