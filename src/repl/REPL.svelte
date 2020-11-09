@@ -8,15 +8,13 @@
   const bundler = new Worker('./bundler.js')
 
 	let bundled
-	let cache
 
 	bundler.addEventListener('message', event => {
 		bundled = event.data.bundled
-		cache = event.data.cache
 	})
 
 	function bundle (replFiles) {
-		bundler.postMessage({ replFiles, cache })
+		bundler.postMessage({ replFiles })
 	}
 
 	$: bundle(replFiles)

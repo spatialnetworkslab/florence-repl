@@ -13,16 +13,16 @@ function generateFileLookup (replFiles) {
   }
 }
 
+let rollupCache
+
 self.addEventListener(
   'message',
   async event => {
     generateFileLookup(event.data.replFiles)
 
-    let cache = event.data.cache
-
     const bundle = await rollup.rollup({
       input: './App.svelte',
-      cache,
+      cache: rollupCache,
       plugins: [
         {
           name: 'repl-plugin',
@@ -35,7 +35,7 @@ self.addEventListener(
       inlineDynamicImports: true
     })
 
-    cache = bundle.cache
+    rollupCache = bundle.cache
 
     // a touch longwinded but output contains an array of chunks
     // we are not code-splitting, so we only have a single chunk
@@ -43,6 +43,6 @@ self.addEventListener(
       .output[0]
       .code
 
-    self.postMessage({ bundled, cache })
+    self.postMessage({ bundled })
   }
 )

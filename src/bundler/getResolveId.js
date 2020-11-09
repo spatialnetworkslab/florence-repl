@@ -26,8 +26,8 @@ export default function (fileLookup) {
 
     // florence
     if (importee === '@snlab/florence') {
-      // return `${SNLAB_URL}/florence@HEAD/src/index.js`
-      return `${SNLAB_URL}/florence@d9b766574c3c60164110878a049c956002c50e84/dist/index.mjs`
+      // return `${SNLAB_URL}/florence@HEAD/dist/index.mjs`
+      return `${SNLAB_URL}/florence@a90efb58df17a7763dff14d3d2614c05912f6f9e/dist/index.mjs`
     }
 
     // DataContainer
