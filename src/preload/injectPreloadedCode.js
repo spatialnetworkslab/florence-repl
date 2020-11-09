@@ -70,7 +70,6 @@ function getCompilerRenames (transformedDummyCode, packageMetadata) {
       .map(declaration => declaration.split(';')[0])
       .filter(declaration => declaration && declaration !== '')
       .map(declaration => declaration.split('const ')[1])
-      // .map(declaration => declaration.split(' = ')[0])
 
     const newVariableNames = newIsOld.map(pair => pair.split(' = ')[0])
     const oldVariableNames = newIsOld.map(pair => {

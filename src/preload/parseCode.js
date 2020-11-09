@@ -32,7 +32,7 @@ function wrapIIFE (code, newPackageMetadata) {
   return '(function() {\n' +
     `${code}\n` +
     `return ${returnValue}\n` +
-    '})()'
+    '})();'
 }
 
 function asString (exportsObject) {

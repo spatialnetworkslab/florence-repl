@@ -19,7 +19,7 @@ describe('injectPreloadedCode', () => {
         'function y() { return x() }\n' +
         'function z() { return 123 }\n' +
         'return { y: y, z: z }\n' +
-        '})()',
+        '})();',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
       'export const y = \'y\'\n' +
       'export const z = \'z\'\n' +
@@ -32,7 +32,7 @@ describe('injectPreloadedCode', () => {
     'function y() { return x() }\n' +
     'function z() { return 123 }\n' +
     'return { y: y, z: z }\n' +
-    '})()\n' +
+    '})();\n' +
     '// Code after'
 
     expect(injectPreloadedCodePackage(bundled, packageMetadata)).toBe(expectedResult)
@@ -56,7 +56,7 @@ describe('injectPreloadedCode', () => {
         'function y() { return x() }\n' +
         'function z() { return 123 }\n' +
         'return { y: y, z: z }\n' +
-        '})()',
+        '})();',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
       'export const y = \'y\'\n' +
       'export const z = \'z\'\n' +
@@ -69,7 +69,7 @@ describe('injectPreloadedCode', () => {
     'function y() { return x() }\n' +
     'function z() { return 123 }\n' +
     'return { y: y, z: z }\n' +
-    '})()\n' +
+    '})();\n' +
     '// Code after'
 
     expect(injectPreloadedCodePackage(bundled, packageMetadata)).toBe(expectedResult)
@@ -91,7 +91,7 @@ describe('injectPreloadedCode', () => {
         'function x() { return \'bla\' }\n' +
         'function y() { return x() }\n' +
         'return { y: y }\n' +
-        '})()',
+        '})();',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
         'export default y = \'y\'\n' +
         '/* @@END_DUMMY_CODE_some-package@@ */'
@@ -102,7 +102,7 @@ describe('injectPreloadedCode', () => {
     'function x() { return \'bla\' }\n' +
     'function y() { return x() }\n' +
     'return { y: y }\n' +
-    '})()\n' +
+    '})();\n' +
     '// Code after'
 
     expect(injectPreloadedCodePackage(bundled, packageMetadata)).toBe(expectedResult)
@@ -124,7 +124,7 @@ describe('injectPreloadedCode', () => {
         'function x() { return \'bla\' }\n' +
         'function y() { return x() }\n' +
         'return { y: y }\n' +
-        '})()',
+        '})();',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
         'export default y = \'y\'\n' +
         '/* @@END_DUMMY_CODE_some-package@@ */'
@@ -135,7 +135,7 @@ describe('injectPreloadedCode', () => {
     'function x() { return \'bla\' }\n' +
     'function y() { return x() }\n' +
     'return { y: y }\n' +
-    '})()\n' +
+    '})();\n' +
     '// Code after'
 
     expect(injectPreloadedCodePackage(bundled, packageMetadata)).toBe(expectedResult)

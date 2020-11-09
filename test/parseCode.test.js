@@ -28,7 +28,7 @@ describe('parseCode', () => {
         'function y() { return x() }\n' +
         'function z() { return 123 }\n' +
         'return { y: y, z: z }\n' +
-        '})()',
+        '})();',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
       'export const y = \'y\'\n' +
       'export const z = \'z\'\n' +
@@ -65,7 +65,7 @@ describe('parseCode', () => {
         'function y() { return x() }\n' +
         'function z() { return 123 }\n' +
         'return { y1: y, z: z }\n' +
-        '})()',
+        '})();',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
       'export const y1 = \'y1\'\n' +
       'export const z = \'z\'\n' +
@@ -97,7 +97,7 @@ describe('parseCode', () => {
         'function x() { return \'bla\' }\n' +
         'function y() { return x() }\n' +
         'return { y: y }\n' +
-        '})()',
+        '})();',
       dummyCode: '/* @@START_DUMMY_CODE_some-package@@ */\n' +
         'const y = \'y\'\n' +
         'export default y\n' +
