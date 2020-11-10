@@ -3,10 +3,8 @@
   import Tab from './Tab.svelte'
 
   export let replFiles
-  export let currentFileName
+  export let currentFileId
   
-  let fileNameBeingEdited
-
   function addNew () {}
   function onClick () {}
   function dragStart () {}
@@ -35,12 +33,12 @@
 <div class="component-selector">
 	<div class="file-tabs" on:dblclick="{addNew}">
 			
-    {#each Object.values(replFiles) as replFile}
+    {#each replFiles as replFile}
 
 			<Tab
-        {replFile}
-        {currentFileName}
-        bind:fileNameBeingEdited
+        fileId={replFile.id}
+        bind:replFiles
+        {currentFileId}
         on:click={onClick}
         on:dragstart={dragStart}
         on:dragover={dragOver}

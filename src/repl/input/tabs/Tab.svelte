@@ -1,14 +1,17 @@
 <script>
   import { createEventDispatcher } from 'svelte'
-  import EditableTab from './EditableTab.svelte'
+  import TabNameEditor from './TabNameEditor.svelte'
+  import getFileName from '../../../utils/getFileName.js'
+  import getFileIndex from '../../../utils/getFileIndex.js'
+
+  export let fileId
+  export let replFiles
+  export let currentFileId
+
+  $: fileIndex = getFileIndex(replFiles, fileId)
+  $: fileName = getFileName(replFiles[fileIndex])
 
   const dispatch = createEventDispatcher()
-
-  export let replFile
-  export let currentFileName
-  export let fileNameBeingEdited
-
-  let over = null
 </script>
 
 <style>
@@ -71,16 +74,28 @@
   }
 </style>
 
-<div
-	id={replFile.fileName}
+<!-- <div
+	id={fileName}
 	class="button"
 	role="button"
-	class:active="{replFile.fileName === currentFileName}"
-	class:draggable={replFile.fileName !== fileNameBeingEdited}
-	class:drag-over={replFile.fileName === over}
+	class:active={fileName === currentFileName}
+	class:draggable={replFile.fileName !== 'fileNameBeingEdited'}
+	class:drag-over={replFile.fileName === 'over'}
 	on:click={e => dispatch('click', e)} 
-	on:dblclick="{e => e.stopPropagation()}"
+	on:dblclick={e => e.stopPropagation()}
 	draggable={replFile.fileName !== fileNameBeingEdited}
+	on:dragstart={e => { dispatch('dragstart', e) }}
+	on:dragover={e => { dispatch('dragover', e)}}
+	on:dragleave={e => { dispatch('dragleave', e)}}
+	on:drop={e => { dispatch('dragend', e)}}
+> -->
+<div
+	id={fileName}
+	class="button"
+	role="button"
+	class:active={fileId === currentFileId}
+	on:click={e => dispatch('click', e)} 
+	on:dblclick={e => e.stopPropagation()}
 	on:dragstart={e => { dispatch('dragstart', e) }}
 	on:dragover={e => { dispatch('dragover', e)}}
 	on:dragleave={e => { dispatch('dragleave', e)}}
@@ -89,7 +104,7 @@
 
   <i class="drag-handle"></i>
 
-	{#if replFile.fileName === 'App.svelte'}
+	{#if fileName === 'App.svelte'}
 
 		<div class="uneditable">
 			App.svelte
@@ -97,7 +112,10 @@
 
   {:else}
 
-		<EditableTab />
+		<TabNameEditor 
+      bind:replFiles
+      {fileId}
+    />
 
 	{/if}
 </div>

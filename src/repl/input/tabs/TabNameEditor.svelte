@@ -1,5 +1,16 @@
 <script>
-  export let fileNameBeingEdited
+  export let replFiles
+  export let fileId
+
+  $: fileIndex = getFileIndex(replFiles, fileId)
+  $: file = replFiles[fileIndex]
+
+  let editing = false
+  let fileNameBeingEdited = null
+
+  function isComponentNameUsed (fileName) {
+
+  }
 </script>
 
 <style>
@@ -55,7 +66,7 @@
 	<input
 		autofocus
 		spellcheck={false}
-		bind:value={fileNameBeingEdited}
+		bind:value={file.}
 		on:focus={selectInput}
 		on:blur={closeEdit}
 		on:keydown={e => e.which === 13 && !isComponentNameUsed(editing) && e.target.blur()}
@@ -67,7 +78,7 @@
 	<div
 		class="editable"
 		title="edit component name"
-		on:click="{() => editTab(component)}"
+		on:click="{() => { editing = true }}"
 	>
 		{component.name}.{component.type}
 	</div>

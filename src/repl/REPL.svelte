@@ -3,10 +3,15 @@
 	import Output from './output/Output.svelte'
 
   import injectPreloadedCode from '../preload/injectPreloadedCode.js'
+  import getFileName from '../utils/getFileName.js'
 
   export let replFiles
-  export let currentFileName
+  export let currentFileId = 0
   export let preloaded = undefined
+
+  if (!(getFileName(replFiles[0]) === 'App.svelte')) {
+    throw new Error('First file must be \'App.svelte\'')
+  }
 
   let bundled
 
@@ -28,7 +33,7 @@
     let dummyCodePackages = {}
 
     for (const replFile of replFiles) {
-      dummyCodePackages[replFile.fileName] = replFile.dummyCode
+      dummyCodePackages[`./${getFileName(replFile)}`] = replFile.dummyCode
     }
 
     bundler.postMessage({ replFiles, dummyCodePackages })
@@ -41,7 +46,7 @@
 	
   <Input 
     bind:replFiles 
-    bind:currentFileName
+    bind:currentFileId
   />
 
 	<Output {bundled} />

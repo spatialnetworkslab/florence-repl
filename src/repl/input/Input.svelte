@@ -2,14 +2,16 @@
   import { tick } from 'svelte'
   import Editor from './codemirror/Editor.svelte'
   import Tabs from './tabs/Tabs.svelte'
+  import getFileIndex from '../../../utils/getFileIndex.js'
 
   export let replFiles
-  export let currentFileName
+  export let currentFileId
 
-  $: currentFile = replFiles[currentFileName]
+  $ :currentFileIndex = getFileIndex(replFiles, currentFileId)
+  $: currentFile = replFiles[currentFileIndex]
 
   function updateCurrentFile (newCode) {
-    replFiles[currentFileName].source = newCode.detail
+    replFiles[currentFileIndex].source = newCode.detail
   }
 </script>
 
@@ -17,7 +19,7 @@
 
 	<Tabs
 		bind:replFiles
-		bind:currentFileName
+		bind:currentFileId
   />
 
 	<Editor 

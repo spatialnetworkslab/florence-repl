@@ -8,22 +8,22 @@
 
   const replFiles = [
     {
+      id: 0,
       name: 'App',
 			type: 'svelte',
-      fileName: 'App.svelte',
 			source: appSource.trim(),
     },
     
     {
+      id: 1,
       name: 'Component1',
       type: 'svelte',
-      fileName: 'Component1.svelte',
 	    source: '<h1>Hello</h1>',
     }
   ]
-
-  const currentFileName = 'App.svelte'
   
+  let currentFileId = 0
+
   let preloaded
 
   onMount(async () => {
@@ -35,7 +35,7 @@
 
   <REPL
     {replFiles}
-    {currentFileName}
+    {currentFileId}
     {preloaded}
   />
 

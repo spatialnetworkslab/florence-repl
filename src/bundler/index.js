@@ -5,11 +5,13 @@ import getResolveId from './getResolveId.js'
 import getLoad from './getLoad.js'
 import getTransform from './getTransform.js'
 
+import getFileName from '../utils/getFileName.js'
+
 function generateFileLookup (replFiles) {
   const fileLookup = {}
 
-  for (const fileName in replFiles) {
-    fileLookup[`./${fileName}`] = replFiles[fileName]
+  for (const replFile of replFiles) {
+    fileLookup[`./${getFileName(replFile)}`] = replFile
   }
 
   return fileLookup
