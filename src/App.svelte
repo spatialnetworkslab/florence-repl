@@ -4,21 +4,21 @@
   import DataContainer from './packages/DataContainer.js'
   import florence from './packages/florence.js'
 
-  const replFiles = {
-    'App.svelte': {
+  const replFiles = [
+    {
       name: 'App',
 			type: 'svelte',
       fileName: 'App.svelte',
 			source: appSource.trim(),
     },
     
-    'Component1.svelte': {
+    {
       name: 'Component1',
       type: 'svelte',
       fileName: 'Component1.svelte',
 	    source: '<h1>Hello</h1>',
     }
-  }
+  ]
 
   const currentFileName = 'App.svelte'
   

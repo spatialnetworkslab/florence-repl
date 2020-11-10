@@ -3,7 +3,7 @@
 </script>
 
 <style>
-  .editable, .uneditable, .input-sizer, input {
+  .editable, .input-sizer, input {
 		display: inline-block;
 		position: relative;
 		line-height: 1;

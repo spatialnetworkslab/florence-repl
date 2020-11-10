@@ -63,6 +63,12 @@
 			white 4px, var(--drag-handle-color) 4px
 		);
 	}
+
+  .uneditable {
+    display: inline-block;
+		position: relative;
+		line-height: 1;
+  }
 </style>
 
 <div
