@@ -1,7 +1,7 @@
 <script>
   import { tick } from 'svelte'
   import Editor from './codemirror/Editor.svelte'
-  import Tabs from './Tabs.svelte'
+  import Tabs from './tabs/Tabs.svelte'
 
   export let replFiles
   export let currentFileName
