@@ -1,8 +1,10 @@
 <script>
-  import REPL from './repl/REPL.svelte'
-  import appSource from './appSource.js'
+  import { onMount } from 'svelte'
+  import preloadPackages from './preload/preloadPackages.js'
   import DataContainer from './packages/DataContainer.js'
   import florence from './packages/florence.js'
+  import REPL from './repl/REPL.svelte'
+  import appSource from './appSource.js'
 
   const replFiles = [
     {
@@ -22,11 +24,19 @@
 
   const currentFileName = 'App.svelte'
   
-  const preload = [DataContainer, florence]
+  let preloaded
+
+  onMount(async () => {
+    preloaded = await preloadPackages([DataContainer, florence])
+  })
 </script>
 
-<REPL
-  {replFiles}
-  {currentFileName}
-  {preload}
-/>
+{#if preloaded}
+
+  <REPL
+    {replFiles}
+    {currentFileName}
+    {preloaded}
+  />
+
+{/if}
