@@ -15,7 +15,7 @@
   }
 </script>
 
-<section>
+<section style="width: 100%;">
 
 	<Tabs
 		bind:replFiles

@@ -4,6 +4,7 @@
 
   import injectPreloadedCode from '../preload/injectPreloadedCode.js'
   import getFileName from '../utils/getFileName.js'
+  import getDummyCodePackages from '../utils/getDummyCodePackages.js'
 
   export let replFiles
   export let currentFileId = 0
@@ -14,41 +15,68 @@
   }
 
   let bundled
+  let error
 
   const bundler = new Worker('./bundler.js')
 
 	bundler.addEventListener('message', event => {
+    if (event.data.error) {
+      error = event.data.error
+      return
+    }
+
 		if (preloaded) {
       bundled = injectPreloadedCode(
         event.data.bundled,
         event.data.preloadedPackagesUsed,
         preloaded
       )
-    } else {
-      bundled = event.data.bundled
+
+      return
     }
+
+    bundled = event.data.bundled
 	})
 
 	function bundle (replFiles) {
-    let dummyCodePackages = {}
-
-    for (const packageName in preloaded) {
-      dummyCodePackages[packageName] = preloaded[packageName].dummyCode
-    }
-
+    const dummyCodePackages = getDummyCodePackages(preloaded)
     bundler.postMessage({ replFiles, dummyCodePackages })
 	}
 
-	$: bundle(replFiles)
+	$: bundle(replFiles, preloaded)
 </script>
 
-<main>
-	
-  <Input 
+<style>
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+}
+
+.left {
+  left: 0;
+  border-right: 1px solid #eee;
+}
+
+.right {
+  right: 0;
+  border-left: 1px solid #eee;
+}
+</style>
+
+<div class="split left">
+  <Input
     bind:replFiles 
     bind:currentFileId
   />
+</div>
 
-	<Output {bundled} />
-
-</main>
+<div class="split right">
+  <Output
+    {bundled}
+    {error}
+  />
+</div>
