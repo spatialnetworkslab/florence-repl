@@ -27,42 +27,41 @@ self.addEventListener(
     const fileLookup = generateFileLookup(event.data.replFiles)
     const dummyCodePackages = event.data.dummyCodePackages
 
-    // const bundle = await rollup.rollup({
-    //   input: './App.svelte',
-    //   cache: rollupCache,
-    //   plugins: [
-    //     {
-    //       name: 'repl-plugin',
-    //       resolveId: getResolveId(
-    //         fileLookup,
-    //         dummyCodePackages
-    //       ),
-    //       load: getLoad(
-    //         fileLookup,
-    //         preloadedPackagesUsed,
-    //         dummyCodePackages
-    //       ),
-    //       transform: getTransform()
-    //     },
-    //     json
-    //   ],
-    //   inlineDynamicImports: true
-    // })
+    try {
+      const bundle = await rollup.rollup({
+        input: './App.svelte',
+        cache: rollupCache,
+        plugins: [
+          {
+            name: 'repl-plugin',
+            resolveId: getResolveId(
+              fileLookup,
+              dummyCodePackages
+            ),
+            load: getLoad(
+              fileLookup,
+              preloadedPackagesUsed,
+              dummyCodePackages
+            ),
+            transform: getTransform()
+          },
+          json
+        ],
+        inlineDynamicImports: true
+      })
 
-    // rollupCache = bundle.cache
+      rollupCache = bundle.cache
 
-    // // a touch longwinded but output contains an array of chunks
-    // // we are not code-splitting, so we only have a single chunk
-    // const bundled = (await bundle.generate({ format: 'esm' }))
-    //   .output[0]
-    //   .code
+      // a touch longwinded but output contains an array of chunks
+      // we are not code-splitting, so we only have a single chunk
+      const bundled = (await bundle.generate({ format: 'esm' }))
+        .output[0]
+        .code
 
-    // self.postMessage({ bundled, preloadedPackagesUsed })
-    const error = {
-      message: 'test error!',
-      filename: './App.svelte'
+      self.postMessage({ bundled, preloadedPackagesUsed })
+    } catch (errorMessage) {
+      const error = { message: errorMessage.toString() }
+      self.postMessage({ error })
     }
-
-    self.postMessage({ error })
   }
 )

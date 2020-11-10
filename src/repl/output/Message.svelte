@@ -1,24 +1,9 @@
 <script>
-	import { slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition'
 
-	export let kind;
-	export let details = null;
-	export let filename = null;
-	export let truncate;
-
-	function message (details) {
-		let str = details.message || '[missing message]'
-
-		let loc = []
-
-		if (details.filename && details.filename !== filename) {
-			loc.push(details.filename)
-		}
-
-		if (details.start) loc.push(details.start.line, details.start.column)
-
-		return str + (loc.length ? ` (${loc.join(':')})` : ``)
-	}
+	export let kind
+	export let details = null
+  export let truncate = false
 </script>
 
 <style>
@@ -29,10 +14,6 @@
 		font: 400 12px/1.7 var(--font);
 		margin: 0;
 		border-top: 1px solid white;
-	}
-
-	.navigable {
-		cursor: pointer;
 	}
 
 	.message::before {
@@ -76,12 +57,19 @@
 	}
 </style>
 
-<div in:slide={{delay: 150, duration: 100}} out:slide={{duration: 100}} class="message {kind}" class:truncate>
+<div 
+  in:slide={{delay: 150, duration: 100}}
+  out:slide={{duration: 100}}
+  class="message {kind}"
+  class:truncate
+>
 	
   {#if details}
 		
-    <p class:navigable={details.filename}>
-     {message(details)}
+    <p>
+     {#each details.message.split('\n') as line}
+      {line} <br />
+     {/each}
     </p>
 
 	{:else}

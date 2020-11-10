@@ -15,7 +15,7 @@
   }
 
   let bundled
-  let error
+  let error = null
 
   const bundler = new Worker('./bundler.js')
 
@@ -24,6 +24,8 @@
       error = event.data.error
       return
     }
+
+    error = null
 
 		if (preloaded) {
       bundled = injectPreloadedCode(
