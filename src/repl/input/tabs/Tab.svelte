@@ -42,13 +42,13 @@
 		display: block;
 	} */
 
-	.button.drag-over {
+	/* .button.drag-over {
 		background: #67677814;
 	}
 
 	.button.drag-over {
 		cursor: move;
-	}
+	} */
 
 	.drag-handle {
 		cursor: move;

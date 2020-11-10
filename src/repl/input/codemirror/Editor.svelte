@@ -194,6 +194,7 @@
 <!-- <div class='codemirror-container' class:flex bind:offsetWidth={w} bind:offsetHeight={h}> -->
 <div class="codemirror-container" class:flex>
 
+    <!-- svelte-ignore a11y-positive-tabindex -->
 	<textarea
 		tabindex='2'
 		bind:this={textArea}
