@@ -22,7 +22,7 @@
       bundled = injectPreloadedCode(
         event.data.bundled,
         event.data.preloadedPackagesUsed,
-        preloadedPackages
+        preloaded
       )
     } else {
       bundled = event.data.bundled
@@ -32,8 +32,8 @@
 	function bundle (replFiles) {
     let dummyCodePackages = {}
 
-    for (const replFile of replFiles) {
-      dummyCodePackages[`./${getFileName(replFile)}`] = replFile.dummyCode
+    for (const packageName in preloaded) {
+      dummyCodePackages[packageName] = preloaded[packageName].dummyCode
     }
 
     bundler.postMessage({ replFiles, dummyCodePackages })

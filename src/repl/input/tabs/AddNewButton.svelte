@@ -5,11 +5,11 @@
 
 <style>
   .add-new {
-		position: absolute;
+		/* position: absolute;
 		left: 0;
-		top: 0;
-		padding: 12px 10px 8px 0 !important;
-		height: 40px;
+		top: 0; */
+		padding: 5px;
+		height: 30px;
 		text-align: center;
 		background-color: white;
 	}
@@ -41,7 +41,7 @@
   on:click={e => { dispatch('click', e) }}
 >
 
-	<svg width="12" height="12" viewBox="0 0 24 24">
+	<svg width="20" height="20" viewBox="0 0 24 24">
 		<line stroke="#999" x1='12' y1='5' x2='12' y2='19' />
 		<line stroke="#999" x1='5' y1='12' x2='19' y2='12' />
 	</svg>

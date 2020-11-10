@@ -1,15 +1,47 @@
 <script>
-  export let replFiles
-  export let fileId
+  import getFileName from '../../../utils/getFileName.js'
+  import { createEventDispatcher } from 'svelte'
 
-  $: fileIndex = getFileIndex(replFiles, fileId)
-  $: file = replFiles[fileIndex]
+  export let replFile
+  export let usedFileNames
+
+  const dispatch = createEventDispatcher()
 
   let editing = false
   let fileNameBeingEdited = null
 
-  function isComponentNameUsed (fileName) {
+  const fileNameFormat = /(.+)\.(svelte|js|json|md)$/
 
+  function validFileName (fileName) {
+    return (
+      fileNameFormat.test(fileName) &&
+      (
+        !usedFileNames.has(fileName) ||
+        getFileName(replFile) === fileName
+      )
+    )
+  }
+
+  function startEditing () {
+    editing = true
+    fileNameBeingEdited = getFileName(replFile)
+  }
+
+  function stopEditing () {
+     if (validFileName(fileNameBeingEdited)) {
+      const split = fileNameBeingEdited.split('.')
+      replFile.type = split.pop()
+      replFile.name = split.length === 1 ? split[0] : split.join('.')
+
+      editing = false
+      fileNameBeingEdited = null
+    }
+  }
+
+  function selectInput (e) {
+		setTimeout(() => {
+			e.target.select()
+		})
   }
 </script>
 
@@ -57,20 +89,20 @@
 	}
 </style>
 
-{#if component === editing}
+{#if editing}
 	<span class="input-sizer">
-    {editing.name + (/\./.test(editing.name) ? '' : `.${editing.type}`)}
+    {replFile.name + (/\./.test(replFile.name) ? '' : `.${replFile.type}`)}
    </span>
 
 	<!-- svelte-ignore a11y-autofocus -->
 	<input
 		autofocus
 		spellcheck={false}
-		bind:value={file.}
+		bind:value={fileNameBeingEdited}
 		on:focus={selectInput}
-		on:blur={closeEdit}
-		on:keydown={e => e.which === 13 && !isComponentNameUsed(editing) && e.target.blur()}
-		class:duplicate={isComponentNameUsed(editing)}
+		on:blur={stopEditing}
+		on:keydown={e => e.which === 13 && validFileName(fileNameBeingEdited) && e.target.blur()}
+		class:duplicate={usedFileNames.has(editing)}
 	>
 
 {:else}
@@ -78,12 +110,12 @@
 	<div
 		class="editable"
 		title="edit component name"
-		on:click="{() => { editing = true }}"
+		on:click={startEditing}
 	>
-		{component.name}.{component.type}
+		{replFile.name}.{replFile.type}
 	</div>
 
-	<span class="remove" on:click="{() => remove(component)}">
+	<span class="remove" on:click="{() => dispatch('delete')}">
 		<svg width="12" height="12" viewBox="0 0 24 24">
 			<line stroke="#999" x1='18' y1='6' x2='6' y2='18' />
 			<line stroke="#999" x1='6' y1='6' x2='18' y2='18' />

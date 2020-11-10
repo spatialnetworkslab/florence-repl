@@ -4,12 +4,11 @@
   import getFileName from '../../../utils/getFileName.js'
   import getFileIndex from '../../../utils/getFileIndex.js'
 
-  export let fileId
-  export let replFiles
-  export let currentFileId
+  export let replFile
+  export let usedFileNames
+  export let active
 
-  $: fileIndex = getFileIndex(replFiles, fileId)
-  $: fileName = getFileName(replFiles[fileIndex])
+  $: fileName = getFileName(replFile)
 
   const dispatch = createEventDispatcher()
 </script>
@@ -93,7 +92,7 @@
 	id={fileName}
 	class="button"
 	role="button"
-	class:active={fileId === currentFileId}
+	class:active
 	on:click={e => dispatch('click', e)} 
 	on:dblclick={e => e.stopPropagation()}
 	on:dragstart={e => { dispatch('dragstart', e) }}
@@ -113,8 +112,8 @@
   {:else}
 
 		<TabNameEditor 
-      bind:replFiles
-      {fileId}
+      bind:replFile
+      {usedFileNames}
     />
 
 	{/if}

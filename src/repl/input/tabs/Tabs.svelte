@@ -1,11 +1,27 @@
 <script>
   import AddNewButton from './AddNewButton.svelte'
   import Tab from './Tab.svelte'
+  import getFileName from '../../../utils/getFileName.js'
 
   export let replFiles
   export let currentFileId
+
+  $: usedFileNames = new Set(replFiles.map(getFileName))
   
-  function addNew () {}
+  function addNew () {
+    const maxId = Math.max(...replFiles.map(f => f.id))
+    currentFileId = maxId + 1 
+
+    replFiles.push({
+      id: currentFileId,
+      name: `Component${currentFileId}`,
+      type: 'svelte',
+      source: ''
+    })
+
+    replFiles = replFiles
+  }
+
   function onClick () {}
   function dragStart () {}
   function dragOver () {}
@@ -25,8 +41,7 @@
 		margin: 0;
 		white-space: nowrap;
 		overflow-x: auto;
-		overflow-y: hidden;
-		height: 10em;
+		overflow-y: hidden
 	}
 </style>
 
@@ -36,9 +51,9 @@
     {#each replFiles as replFile}
 
 			<Tab
-        fileId={replFile.id}
-        bind:replFiles
-        {currentFileId}
+        bind:replFile
+        {usedFileNames}
+        active={replFile.id === currentFileId}
         on:click={onClick}
         on:dragstart={dragStart}
         on:dragover={dragOver}
