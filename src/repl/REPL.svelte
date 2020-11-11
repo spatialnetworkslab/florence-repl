@@ -1,4 +1,6 @@
 <script>
+  import _debounce from 'lodash.debounce'
+
   import Input from './input/Input.svelte'
 	import Output from './output/Output.svelte'
 
@@ -12,6 +14,7 @@
   export let width
   export let height
   export let layout = 'horizontal'
+  export let debounce = 150
 
   if (!(getFileName(replFiles[0]) === 'App.svelte')) {
     throw new Error('First file must be \'App.svelte\'')
@@ -46,11 +49,14 @@
     bundled = event.data.bundled
 	})
 
-	function bundle (replFiles) {
+  function bundleFn (replFiles) {
     bundling = true
+
     const dummyCodePackages = getDummyCodePackages(preloaded)
     bundler.postMessage({ replFiles, dummyCodePackages })
 	}
+
+	$: bundle = debounce ? _debounce(bundleFn, debounce) : bundleFn
 
   $: bundle(replFiles, preloaded)
 
