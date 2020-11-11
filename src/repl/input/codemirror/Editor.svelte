@@ -77,7 +77,7 @@
 
     // if text in editor changes...
 		editor.on('change', instance => {
-      editor.setSize(null, height)
+      // editor.setSize(null, height)
       // Skip dispatch if the update is external
       // Avoids infinite loop
 			if (!updatingExternally) {
@@ -161,9 +161,9 @@
 	}
 </style>
 
-<div class="codemirror-container"></div>
+<div class="codemirror-container">
 
-    <!-- svelte-ignore a11y-positive-tabindex -->
+  <!-- svelte-ignore a11y-positive-tabindex -->
 	<textarea
 		tabindex='2'
 		bind:this={textArea}

@@ -15,8 +15,9 @@
 
 <style>
   .button {
-		position: relative;
 		display: inline-block;
+    position: relative;
+    line-height: 1;
 		font: 400 12px/1.5 var(--font);
 		background: white;
 		border: none;
@@ -50,7 +51,7 @@
 		cursor: move;
 	} */
 
-	.drag-handle {
+	/* .drag-handle {
 		cursor: move;
 		width: 5px;
 		height: 25px;
@@ -64,13 +65,13 @@
 			var(--drag-handle-color) 3px, white 3px,
 			white 4px, var(--drag-handle-color) 4px
 		);
-	}
+	} */
 
-  .uneditable {
+  /* .uneditable {
     display: inline-block;
 		position: relative;
 		line-height: 1;
-  }
+  } */
 </style>
 
 <!-- <div
@@ -101,7 +102,7 @@
 	on:drop={e => { dispatch('dragend', e)}}
 >
 
-  <i class="drag-handle"></i>
+  <!-- <i class="drag-handle"></i> -->
 
 	{#if fileName === 'App.svelte'}
 
