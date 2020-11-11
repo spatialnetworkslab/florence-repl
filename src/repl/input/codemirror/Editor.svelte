@@ -11,9 +11,9 @@
   // Option props
 	export let readonly = false
 	// export let errorLoc = null
-	export let flex = false
 	export let lineNumbers = true
   export let tab = true
+  export let height
   
   // Reference to <textarea> HTML element
   let textArea
@@ -43,6 +43,7 @@
   onMount(async () => {
     type = currentFile.type
     await createEditor()
+    editor.setSize(null, height)
     updateExternal()
 
     mounted = true
@@ -76,6 +77,7 @@
 
     // if text in editor changes...
 		editor.on('change', instance => {
+      editor.setSize(null, height)
       // Skip dispatch if the update is external
       // Avoids infinite loop
 			if (!updatingExternally) {
@@ -94,6 +96,9 @@
 
 		firstUpdate = false
   }
+
+  // Handle updates to height
+  $: { editor && editor.setSize(null, height) }
 
   // Handle external changes to current file
   $: {
@@ -148,51 +153,15 @@
 
 <style>
 	.codemirror-container {
-		position: relative;
-		width: 100%;
-		height: 100%;
-		border: none;
 		line-height: 1.5;
-		overflow: hidden;
-    text-align: left;
-	}
-
-	.codemirror-container :global(.CodeMirror) {
-		height: 100%;
-		background: transparent;
-		font: 400 14px/1.7 var(--font-mono);
-		color: var(--base);
-	}
-
-	.codemirror-container.flex :global(.CodeMirror) {
-		height: auto;
-	}
-
-	.codemirror-container.flex :global(.CodeMirror-lines) {
-		padding: 0;
-	}
-
-	.codemirror-container :global(.CodeMirror-gutters) {
-		padding: 0 16px 0 8px;
-		border: none;
-	}
-
-	.codemirror-container :global(.error-loc) {
-		position: relative;
-		border-bottom: 2px solid #da106e;
-	}
-
-	.codemirror-container :global(.error-line) {
-		background-color: rgba(200, 0, 0, .05);
-	}
+  }
 
 	textarea {
 		visibility: hidden;
 	}
 </style>
 
-<!-- <div class='codemirror-container' class:flex bind:offsetWidth={w} bind:offsetHeight={h}> -->
-<div class="codemirror-container" class:flex>
+<div class="codemirror-container"></div>
 
     <!-- svelte-ignore a11y-positive-tabindex -->
 	<textarea
