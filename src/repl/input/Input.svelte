@@ -6,6 +6,7 @@
 
   export let replFiles
   export let currentFileId
+  export let height
 
   $ :currentFileIndex = getFileIndex(replFiles, currentFileId)
   $: currentFile = replFiles[currentFileIndex]
@@ -15,15 +16,12 @@
   }
 
   let tabsHeight
-  let windowHeight
   let editorHeight
 
   $: {
-    editorHeight = windowHeight - tabsHeight
+    editorHeight = height - tabsHeight
   }
 </script>
-
-<svelte:window bind:innerHeight={windowHeight} />
 
 <div bind:clientHeight={tabsHeight}>
   <Tabs

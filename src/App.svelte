@@ -29,7 +29,15 @@
   onMount(async () => {
     preloaded = await preloadPackages([DataContainer, florence])
   })
+
+  let width
+  let height
 </script>
+
+<svelte:window
+  bind:innerWidth={width}
+  bind:innerHeight={height}
+/>
 
 {#if preloaded}
 
@@ -37,6 +45,8 @@
     {replFiles}
     {currentFileId}
     {preloaded}
+    {width}
+    {height}
   />
 
 {/if}

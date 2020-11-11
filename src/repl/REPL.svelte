@@ -9,6 +9,8 @@
   export let replFiles
   export let currentFileId = 0
   export let preloaded = undefined
+  export let width
+  export let height
 
   if (!(getFileName(replFiles[0]) === 'App.svelte')) {
     throw new Error('First file must be \'App.svelte\'')
@@ -45,14 +47,12 @@
     bundler.postMessage({ replFiles, dummyCodePackages })
 	}
 
-	$: bundle(replFiles, preloaded)
+  $: bundle(replFiles, preloaded)
 </script>
 
 <style>
 .split {
-  height: 100%;
-  width: 50%;
-  position: fixed;
+  position: absolute;
   z-index: 1;
   top: 0;
   overflow-x: hidden;
@@ -69,16 +69,33 @@
 }
 </style>
 
-<div class="split left">
-  <Input
-    bind:replFiles 
-    bind:currentFileId
-  />
-</div>
+<div
+  style={``}
+>
 
-<div class="split right">
-  <Output
-    {bundled}
-    {error}
-  />
+  <div 
+    class="split left"
+    style={`width: ${width / 2}px; height: ${height}px;`}
+  >
+
+    <Input
+      bind:replFiles 
+      bind:currentFileId
+      {height}
+    />
+
+  </div>
+
+  <div 
+    class="split right"
+    style={`width: ${width / 2}px; height: ${height}px;`}
+  >
+
+    <Output
+      {bundled}
+      {error}
+    />
+
+  </div>
+
 </div>
