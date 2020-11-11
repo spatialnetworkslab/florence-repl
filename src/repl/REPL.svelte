@@ -19,10 +19,13 @@
 
   let bundled
   let error = null
+  let bundling = false
 
   const bundler = new Worker('./bundler.js')
 
 	bundler.addEventListener('message', event => {
+    bundling = false
+
     if (event.data.error) {
       error = event.data.error
       return
@@ -44,6 +47,7 @@
 	})
 
 	function bundle (replFiles) {
+    bundling = true
     const dummyCodePackages = getDummyCodePackages(preloaded)
     bundler.postMessage({ replFiles, dummyCodePackages })
 	}
@@ -52,6 +56,8 @@
 
   $: inputClass = `split ${layout} ${layout === 'horizontal' ? 'left' : 'top' }`
   $: outputClass = `split ${layout} ${layout === 'horizontal' ? 'right': 'bottom' }`
+
+  $: loadingEditor = bundled ? null : { message: 'Loading editor...' }
 </script>
 
 <style>
@@ -109,6 +115,7 @@
     <Output
       {bundled}
       {error}
+      {bundling}
     />
 
   </div>

@@ -4,6 +4,7 @@
 
   export let bundled
   export let error
+  export let bundling
 
 	let iframe
 
@@ -11,7 +12,7 @@
 		iframe.contentWindow.postMessage(code, "*")
 	}
 
-	$: iframe && bundled && update(bundled)
+  $: iframe && bundled && update(bundled)
 </script>
 
 <style>
@@ -67,8 +68,12 @@
 	</div> -->
   <div class="overlay">
 		{#if error}
-			<Message kind="error" details={error}/>
+			<Message kind="error" details={error} />
 		{/if}
+
+    {#if bundling}
+      <Message kind="info" details={{ message: 'Bundling...' }} />
+    {/if}
 	</div>
 
 </section>
