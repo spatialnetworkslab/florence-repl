@@ -1,6 +1,6 @@
 <script>
-  import getFileName from '../../../utils/getFileName.js'
   import { createEventDispatcher } from 'svelte'
+  import getFileName from '../../../utils/getFileName.js'
   import EditIcon from './EditIcon.svelte'
   import DeleteIcon from './DeleteIcon.svelte'
 
@@ -51,14 +51,13 @@
 <style>
   input {
 		position: absolute;
-		width: 100%;
-		left: 24px;
+    left: 20px;
+    top: -1px;
 		border: none;
     outline: none;
     font-family: "Courier New";
     font-size: 14px;
-    font-style: italic;
-		/* background-color: transparent; */
+    color: #969696;
 	}
 
 	.duplicate {
@@ -74,7 +73,7 @@
       on:click={startEditing}
     /><!--
 
-    --><span style="padding: 0px 4px; color: white;">{replFile.name}.{replFile.type}</span><!--
+    --><span style="padding: 0px 4px; color: white;">{fileNameBeingEdited}</span><!--
 
     --><DeleteIcon
       visible={false}

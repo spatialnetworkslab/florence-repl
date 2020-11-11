@@ -24,7 +24,7 @@
   height={12}
   class="edit-icon"
   viewbox="0 -2 24 22"
-  on:click={() => dispatch('click')}
+  on:click={e => { e.stopPropagation(); dispatch('click') }}
 >
   {#if visible}
     <line x1={max} y1={min} x2={min} y2={max} stroke-width={4} />

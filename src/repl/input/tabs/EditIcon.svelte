@@ -21,7 +21,7 @@
   height={12}
   class="edit-icon"
   viewbox="-4 -4 28 28"
-  on:click={() => dispatch('click')}
+  on:click={e => { e.stopPropagation(); dispatch('click') }}
 >
   {#if visible}
     <path
