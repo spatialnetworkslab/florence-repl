@@ -49,7 +49,8 @@
   .editable, .input-sizer, input {
 		display: inline-block;
 		position: relative;
-		line-height: 1;
+    line-height: 1;
+    cursor: text;
 	}
 
 	.input-sizer {

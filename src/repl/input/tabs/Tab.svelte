@@ -18,7 +18,13 @@
 		display: inline-block;
     position: relative;
     line-height: 1;
-		font: 400 12px/1.5 var(--font);
+    font-family: "Courier New";
+    font-size: 12px;
+    padding: 12px 18px 8px 20px;
+    border-left: 1px #dddddd solid;
+    cursor: pointer;
+
+		/* font: 400 12px/1.5 var(--font);
 		background: white;
 		border: none;
 		border-bottom: 3px solid transparent;
@@ -26,7 +32,7 @@
 		margin: 0;
 		color: #999;
 		border-radius: 0;
-		cursor: pointer;
+		cursor: pointer; */
   }
 
   .button.active {
