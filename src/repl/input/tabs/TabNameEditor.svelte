@@ -1,9 +1,12 @@
 <script>
   import getFileName from '../../../utils/getFileName.js'
   import { createEventDispatcher } from 'svelte'
+  import EditIcon from './EditIcon.svelte'
+  import DeleteIcon from './DeleteIcon.svelte'
 
   export let replFile
   export let usedFileNames
+  export let iconsVisible
 
   const dispatch = createEventDispatcher()
 
@@ -46,16 +49,9 @@
 </script>
 
 <style>
-  .editable, .input-sizer, input {
-		display: inline-block;
-		position: relative;
-    line-height: 1;
-    cursor: text;
-	}
-
-	.input-sizer {
+  /* .input-sizer {
 		color: #ccc;
-	}
+	} */
 
 	input {
 		position: absolute;
@@ -72,28 +68,13 @@
 	.duplicate {
 		color: var(--prime);
 	}
-
-	.remove {
-		position: absolute;
-		display: none;
-		right: 1px;
-		top: 4px;
-		width: 16px;
-		text-align: right;
-		padding: 12px 0 12px 5px;
-		font-size: 8px;
-		cursor: pointer;
-	}
-
-	.remove:hover {
-		color: var(--flash);
-	}
 </style>
 
 {#if editing}
-	<span class="input-sizer">
+
+	<!-- <span class="input-sizer">
     {replFile.name + (/\./.test(replFile.name) ? '' : `.${replFile.type}`)}
-   </span>
+   </span> -->
 
 	<!-- svelte-ignore a11y-autofocus -->
 	<input
@@ -108,19 +89,17 @@
 
 {:else}
 
-	<div
-		class="editable"
-		title="edit component name"
-		on:click={startEditing}
-	>
-		{replFile.name}.{replFile.type}
-	</div>
+  <span style="padding: 0px 4px;">
+    <EditIcon
+      visible={iconsVisible}
+      on:click={startEditing}
+    /><!--
 
-	<span class="remove" on:click="{() => dispatch('delete')}">
-		<svg width="12" height="12" viewBox="0 0 24 24">
-			<line stroke="#999" x1='18' y1='6' x2='6' y2='18' />
-			<line stroke="#999" x1='6' y1='6' x2='18' y2='18' />
-		</svg>
-	</span>
-		
+    --><span style="padding: 0px 4px;">{replFile.name}.{replFile.type}</span><!--
+
+    --><DeleteIcon
+      visible={iconsVisible}
+    />
+  </span>
+
 {/if}

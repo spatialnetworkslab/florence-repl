@@ -22,7 +22,8 @@
     replFiles = replFiles
   }
 
-  function onClick () {}
+  function select (e) { currentFileId = e.detail }
+
   function dragStart () {}
   function dragOver () {}
   function dragLeave () {}
@@ -50,15 +51,21 @@
 			
     {#each replFiles as replFile}
 
-			<Tab
+			<!-- <Tab
         bind:replFile
         {usedFileNames}
         active={replFile.id === currentFileId}
-        on:click={onClick}
+        on:click={click}
         on:dragstart={dragStart}
         on:dragover={dragOver}
         on:dragleave={dragLeave}
         on:dragend={dragEnd}
+      /> -->
+      <Tab
+        bind:replFile
+        {usedFileNames}
+        active={replFile.id === currentFileId}
+        on:select={select}
       />
 
 		{/each}

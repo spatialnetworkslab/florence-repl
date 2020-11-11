@@ -11,6 +11,8 @@
   $: fileName = getFileName(replFile)
 
   const dispatch = createEventDispatcher()
+
+  let iconsVisible = false
 </script>
 
 <style>
@@ -19,27 +21,18 @@
     position: relative;
     line-height: 1;
     font-family: "Courier New";
-    font-size: 12px;
-    padding: 12px 18px 8px 20px;
-    border-left: 1px #dddddd solid;
-    cursor: pointer;
-
-		/* font: 400 12px/1.5 var(--font);
-		background: white;
-		border: none;
-		border-bottom: 3px solid transparent;
-		padding: 12px 14px 8px 16px;
-		margin: 0;
-		color: #999;
-		border-radius: 0;
-		cursor: pointer; */
+    font-size: 14px;
+    border-left: 2px #dddddd solid;
+    cursor: default;
   }
 
   .button.active {
-		/* color: var(--second); */
-		color: #333;
-		border-bottom: 3px solid var(--prime);
-	}
+    font-weight: bold;
+  }
+  
+  .uneditable {
+    padding: 10px 20px;
+  }
 
 	/* .button.active .editable {
 		cursor: text;
@@ -72,40 +65,21 @@
 			white 4px, var(--drag-handle-color) 4px
 		);
 	} */
-
-  /* .uneditable {
-    display: inline-block;
-		position: relative;
-		line-height: 1;
-  } */
 </style>
 
-<!-- <div
-	id={fileName}
-	class="button"
-	role="button"
-	class:active={fileName === currentFileName}
-	class:draggable={replFile.fileName !== 'fileNameBeingEdited'}
-	class:drag-over={replFile.fileName === 'over'}
-	on:click={e => dispatch('click', e)} 
-	on:dblclick={e => e.stopPropagation()}
-	draggable={replFile.fileName !== fileNameBeingEdited}
-	on:dragstart={e => { dispatch('dragstart', e) }}
-	on:dragover={e => { dispatch('dragover', e)}}
-	on:dragleave={e => { dispatch('dragleave', e)}}
-	on:drop={e => { dispatch('dragend', e)}}
-> -->
 <div
 	id={fileName}
 	class="button"
 	role="button"
 	class:active
-	on:click={e => dispatch('click', e)} 
+	on:click={e => { dispatch('select', replFile.id) }}
 	on:dblclick={e => e.stopPropagation()}
 	on:dragstart={e => { dispatch('dragstart', e) }}
 	on:dragover={e => { dispatch('dragover', e)}}
 	on:dragleave={e => { dispatch('dragleave', e)}}
 	on:drop={e => { dispatch('dragend', e)}}
+  on:mouseenter={e => { iconsVisible = true }}
+  on:mouseleave={e => { iconsVisible = false }}
 >
 
   <!-- <i class="drag-handle"></i> -->
@@ -121,6 +95,7 @@
 		<TabNameEditor 
       bind:replFile
       {usedFileNames}
+      {iconsVisible}
     />
 
 	{/if}
