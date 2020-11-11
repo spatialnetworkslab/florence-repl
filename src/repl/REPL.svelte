@@ -53,9 +53,7 @@
 <style>
 .split {
   position: absolute;
-  z-index: 1;
   top: 0;
-  overflow-x: hidden;
 }
 
 .left {
@@ -70,12 +68,16 @@
 </style>
 
 <div
-  style={``}
+  style={`width: ${width}px; position: absolute;`}
 >
 
-  <div 
+  <!-- <div 
     class="split left"
     style={`width: ${width / 2}px; height: ${height}px;`}
+  > -->
+  <div 
+    class="split left"
+    style={`width: 50%; height: ${height}px;`}
   >
 
     <Input
@@ -86,9 +88,13 @@
 
   </div>
 
-  <div 
+  <!-- <div 
     class="split right"
     style={`width: ${width / 2}px; height: ${height}px;`}
+  > -->
+  <div 
+    class="split right"
+    style={`width: 50%; height: ${height}px;`}
   >
 
     <Output

@@ -30,14 +30,17 @@
     preloaded = await preloadPackages([DataContainer, florence])
   })
 
-  let width
-  let height
+  // let width
+  // let height
+
+  let width = 1300
+  let height = 500
 </script>
 
-<svelte:window
+<!-- <svelte:window
   bind:innerWidth={width}
   bind:innerHeight={height}
-/>
+/> -->
 
 {#if preloaded}
 
