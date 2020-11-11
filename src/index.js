@@ -6,5 +6,5 @@ export const preloadable = {
   florence
 }
 
-export { default as REPL } from './repl/REPl.svelte'
+export { default as REPL } from './repl/REPL.svelte'
 export { default as preloadPackages } from './preload/preloadPackages.js'
