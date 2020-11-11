@@ -54,6 +54,8 @@
 .split {
   position: absolute;
   top: 0;
+  width: 50%; 
+  height: 100%;
 }
 
 .left {
@@ -68,17 +70,10 @@
 </style>
 
 <div
-  style={`width: ${width}px; position: absolute;`}
+  style={`width: ${width}px; height: ${height}px;`}
 >
 
-  <!-- <div 
-    class="split left"
-    style={`width: ${width / 2}px; height: ${height}px;`}
-  > -->
-  <div 
-    class="split left"
-    style={`width: 50%; height: ${height}px;`}
-  >
+  <div class="split left">
 
     <Input
       bind:replFiles 
@@ -88,14 +83,7 @@
 
   </div>
 
-  <!-- <div 
-    class="split right"
-    style={`width: ${width / 2}px; height: ${height}px;`}
-  > -->
-  <div 
-    class="split right"
-    style={`width: 50%; height: ${height}px;`}
-  >
+  <div class="split right" >
 
     <Output
       {bundled}
