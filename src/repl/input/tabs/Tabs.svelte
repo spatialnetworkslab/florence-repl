@@ -77,11 +77,11 @@
         active={replFile.id === currentFileId}
         on:select={select}
         on:remove={remove}
-      />
+      /><!--
 
-		{/each}
+		-->{/each}<!--
 
-		<AddNewButton on:click={addNew} />
+		--><AddNewButton on:click={addNew} />
 		
   </div>
 </div>
