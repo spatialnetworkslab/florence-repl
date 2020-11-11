@@ -10,11 +10,17 @@
   
   function addNew () {
     const maxId = Math.max(...replFiles.map(f => f.id))
-    currentFileId = maxId + 1 
+    currentFileId = maxId + 1
+
+    let counter = 1
+
+    while (usedFileNames.has(`Component${counter}.svelte`)) {
+      counter++ 
+    }
 
     replFiles.push({
       id: currentFileId,
-      name: `Component${currentFileId}`,
+      name: `Component${counter}`,
       type: 'svelte',
       source: ''
     })
@@ -34,10 +40,10 @@
     replFiles = replFiles.filter(file => file.id !== fileToBeRemoved.id)
   }
 
-  function dragStart () {}
-  function dragOver () {}
-  function dragLeave () {}
-  function dragEnd () {}
+  // function dragStart () {}
+  // function dragOver () {}
+  // function dragLeave () {}
+  // function dragEnd () {}
 </script>
 
 <style>
