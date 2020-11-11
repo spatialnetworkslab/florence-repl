@@ -24,6 +24,16 @@
 
   function select (e) { currentFileId = e.detail }
 
+  function remove (e) {
+    const fileToBeRemoved = e.detail
+
+    if (currentFileId === fileToBeRemoved.id) {
+      currentFileId = replFiles[0].id
+    }
+
+    replFiles = replFiles.filter(file => file.id !== fileToBeRemoved.id)
+  }
+
   function dragStart () {}
   function dragOver () {}
   function dragLeave () {}
@@ -66,6 +76,7 @@
         {usedFileNames}
         active={replFile.id === currentFileId}
         on:select={select}
+        on:remove={remove}
       />
 
 		{/each}

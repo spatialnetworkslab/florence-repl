@@ -96,6 +96,7 @@
       bind:replFile
       {usedFileNames}
       {iconsVisible}
+      on:remove={() => { dispatch('remove', replFile) }}
     />
 
 	{/if}

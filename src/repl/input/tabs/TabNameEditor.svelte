@@ -49,20 +49,16 @@
 </script>
 
 <style>
-  /* .input-sizer {
-		color: #ccc;
-	} */
-
-	input {
+  input {
 		position: absolute;
 		width: 100%;
-		left: 16px;
-		top: 12px;
-		font: 400 12px/1.5 var(--font);
+		left: 24px;
 		border: none;
-		color: var(--flash);
-		outline: none;
-		background-color: transparent;
+    outline: none;
+    font-family: "Courier New";
+    font-size: 14px;
+    font-style: italic;
+		/* background-color: transparent; */
 	}
 
 	.duplicate {
@@ -72,9 +68,18 @@
 
 {#if editing}
 
-	<!-- <span class="input-sizer">
-    {replFile.name + (/\./.test(replFile.name) ? '' : `.${replFile.type}`)}
-   </span> -->
+  <span style="padding: 0px 4px;">
+    <EditIcon
+      visible={false}
+      on:click={startEditing}
+    /><!--
+
+    --><span style="padding: 0px 4px; color: white;">{replFile.name}.{replFile.type}</span><!--
+
+    --><DeleteIcon
+      visible={false}
+    />
+  </span>
 
 	<!-- svelte-ignore a11y-autofocus -->
 	<input
@@ -99,6 +104,7 @@
 
     --><DeleteIcon
       visible={iconsVisible}
+      on:click={() => dispatch('remove')}
     />
   </span>
 
