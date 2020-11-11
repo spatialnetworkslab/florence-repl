@@ -1,7 +1,7 @@
 export default {
   name: 'd3-scale',
   url: 'https://cdn.jsdelivr.net/npm/d3-scale@3.2.3',
-  getCodeBody (code) { 
+  getCodeBody (code) {
     return 'const n = {};' + code.substring(476, code.length - 53)
   },
   defaultExport: false,
