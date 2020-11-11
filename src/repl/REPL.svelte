@@ -11,6 +11,7 @@
   export let preloaded = undefined
   export let width
   export let height
+  export let layout = 'horizontal'
 
   if (!(getFileName(replFiles[0]) === 'App.svelte')) {
     throw new Error('First file must be \'App.svelte\'')
@@ -48,14 +49,24 @@
 	}
 
   $: bundle(replFiles, preloaded)
+
+  $: inputClass = `split ${layout} ${layout === 'horizontal' ? 'left' : 'top' }`
+  $: outputClass = `split ${layout} ${layout === 'horizontal' ? 'right': 'bottom' }`
 </script>
 
 <style>
 .split {
   position: absolute;
-  top: 0;
+}
+
+.horizontal {
   width: 50%; 
   height: 100%;
+}
+
+.vertical {
+  width: 100%; 
+  height: 50%;
 }
 
 .left {
@@ -67,23 +78,33 @@
   right: 0;
   border-left: 1px solid #eee;
 }
+
+.top {
+  top: 0;
+  border-bottom: 1px solid #eee;
+}
+
+.bottom {
+  bottom: 0;
+  border-top: 1px solid #eee;
+}
 </style>
 
 <div
   style={`width: ${width}px; height: ${height}px;`}
 >
 
-  <div class="split left">
+  <div class={inputClass}>
 
     <Input
       bind:replFiles 
       bind:currentFileId
-      {height}
+      height={layout === 'horizontal' ? height : height / 2}
     />
 
   </div>
 
-  <div class="split right" >
+  <div class={outputClass}>
 
     <Output
       {bundled}

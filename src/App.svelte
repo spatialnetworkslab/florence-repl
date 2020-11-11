@@ -35,6 +35,8 @@
 
   // let width = 1300
   // let height = 500
+
+  let layout = 'horizontal'
 </script>
 
 <svelte:window
@@ -52,6 +54,7 @@
       {preloaded}
       {width}
       {height}
+      {layout}
     />
 
   </div>
