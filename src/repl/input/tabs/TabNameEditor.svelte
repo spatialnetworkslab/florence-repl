@@ -53,6 +53,7 @@
 		position: absolute;
     left: 20px;
     top: -1px;
+    width: 100%;
 		border: none;
     outline: none;
     font-family: "Courier New";
