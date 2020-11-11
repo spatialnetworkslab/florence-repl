@@ -3,6 +3,7 @@
   import preloadPackages from './preload/preloadPackages.js'
   import DataContainer from './packages/DataContainer.js'
   import florence from './packages/florence.js'
+  // import d3Scale from './packages/d3scale.js'
   import REPL from './repl/REPL.svelte'
   import appSource from './appSource.js'
 
@@ -27,7 +28,7 @@
   let preloaded
 
   onMount(async () => {
-    preloaded = await preloadPackages([DataContainer, florence])
+    preloaded = await preloadPackages([DataContainer, florence/*, d3Scale*/])
   })
 
   let width
