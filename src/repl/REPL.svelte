@@ -1,68 +1,129 @@
 <script>
-  import { onMount } from 'svelte'
+  import _debounce from 'lodash.debounce'
 
-	import Input from './input/Input.svelte'
+  import Input from './input/Input.svelte'
 	import Output from './output/Output.svelte'
 
-  import preloadPackages from '../preload/preloadPackages.js'
   import injectPreloadedCode from '../preload/injectPreloadedCode.js'
+  import getFileName from '../utils/getFileName.js'
+  import getDummyCodePackages from '../utils/getDummyCodePackages.js'
 
   export let replFiles
-  export let currentFileName
-  export let preload = undefined
-  
-  let preloadedPackages
-  let dummyCodePackages = {}
+  export let currentFileId = 0
+  export let preloaded = undefined
+  export let width
+  export let height
+  export let layout = 'horizontal'
+  export let debounce = 150
 
-  onMount(async () => {
-    preloadedPackages = preload ? await preloadPackages(preload) : undefined
+  if (!(getFileName(replFiles[0]) === 'App.svelte')) {
+    throw new Error('First file must be \'App.svelte\'')
+  }
 
-    if (preload) {
-      for (const packageName in preloadedPackages) {
-        dummyCodePackages[packageName] = preloadedPackages[packageName].dummyCode
-      }
-    }
-
-    mounted = true
-  })
+  let bundled
+  let error = null
+  let bundling = false
 
   const bundler = new Worker('./bundler.js')
 
-  let bundled
-
-  // Lifecycle
-  let mounted
-
 	bundler.addEventListener('message', event => {
-		if (mounted) {
-      if (preload) {
-        bundled = injectPreloadedCode(
-          event.data.bundled,
-          event.data.preloadedPackagesUsed,
-          preloadedPackages
-        )
-      } else {
-        bundled = event.data.bundled
-      }
+    bundling = false
+
+    if (event.data.error) {
+      error = event.data.error
+      return
     }
+
+    error = null
+
+		if (preloaded) {
+      bundled = injectPreloadedCode(
+        event.data.bundled,
+        event.data.preloadedPackagesUsed,
+        preloaded
+      )
+
+      return
+    }
+
+    bundled = event.data.bundled
 	})
 
-	function bundle (replFiles) {
-    if (mounted) {
-      bundler.postMessage({ replFiles, dummyCodePackages })
-    }
+  function bundleFn (replFiles) {
+    bundling = true
+
+    const dummyCodePackages = getDummyCodePackages(preloaded)
+    bundler.postMessage({ replFiles, dummyCodePackages })
 	}
 
-	$: bundle(replFiles, mounted)
+	$: bundle = debounce ? _debounce(bundleFn, debounce) : bundleFn
+
+  $: bundle(replFiles, preloaded)
+
+  $: inputClass = `split ${layout} ${layout === 'horizontal' ? 'left' : 'top' }`
+  $: outputClass = `split ${layout} ${layout === 'horizontal' ? 'right': 'bottom' }`
+
+  $: loadingEditor = bundled ? null : { message: 'Loading editor...' }
 </script>
 
-<main>
-	
-  <Input 
-    bind:replFiles 
-    bind:currentFileName
-  />
+<style>
+.split {
+  position: absolute;
+}
 
-	<Output {bundled} />
+.horizontal {
+  width: 50%; 
+  height: 100%;
+}
 
-</main>
+.vertical {
+  width: 100%; 
+  height: 50%;
+}
+
+.left {
+  left: 0;
+  border-right: 1px solid #eee;
+}
+
+.right {
+  right: 0;
+  border-left: 1px solid #eee;
+}
+
+.top {
+  top: 0;
+  border-bottom: 1px solid #eee;
+}
+
+.bottom {
+  bottom: 0;
+  border-top: 1px solid #eee;
+}
+</style>
+
+<div
+  style={`width: ${width}px; height: ${height}px;`}
+>
+
+  <div class={inputClass}>
+
+    <Input
+      bind:replFiles 
+      bind:currentFileId
+      height={layout === 'horizontal' ? height : height / 2}
+    />
+
+  </div>
+
+  <div class={outputClass}>
+
+    <Output
+      {bundled}
+      {error}
+      {bundling}
+    />
+
+  </div>
+
+</div>

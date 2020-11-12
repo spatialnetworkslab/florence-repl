@@ -1,32 +1,63 @@
 <script>
-  import REPL from './repl/REPL.svelte'
-  import appSource from './appSource.js'
+  import { onMount } from 'svelte'
+  import preloadPackages from './preload/preloadPackages.js'
   import DataContainer from './packages/DataContainer.js'
   import florence from './packages/florence.js'
+  // import d3Scale from './packages/d3scale.js'
+  import REPL from './repl/REPL.svelte'
+  import appSource from './appSource.js'
 
-  const replFiles = {
-    'App.svelte': {
+  const replFiles = [
+    {
+      id: 0,
       name: 'App',
 			type: 'svelte',
-      fileName: 'App.svelte',
-			source: appSource,
+			source: appSource.trim(),
     },
     
-    'Component1.svelte': {
+    {
+      id: 1,
       name: 'Component1',
       type: 'svelte',
-      fileName: 'Component1.svelte',
 	    source: '<h1>Hello</h1>',
     }
-  }
-
-  const currentFileName = 'App.svelte'
+  ]
   
-  const preload = [DataContainer, florence]
+  let currentFileId = 0
+
+  let preloaded
+
+  onMount(async () => {
+    preloaded = await preloadPackages([DataContainer, florence/*, d3Scale*/])
+  })
+
+  let width
+  let height
+
+  // let width = 1300
+  // let height = 500
+
+  let layout = 'horizontal'
 </script>
 
-<REPL
-  {replFiles}
-  {currentFileName}
-  {preload}
+<svelte:window
+  bind:innerWidth={width}
+  bind:innerHeight={height}
 />
+
+{#if preloaded}
+
+  <div style="position: absolute; left: 0px; top: 0px;">
+
+    <REPL
+      {replFiles}
+      {currentFileId}
+      {preloaded}
+      {width}
+      {height}
+      {layout}
+    />
+
+  </div>
+
+{/if}

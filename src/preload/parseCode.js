@@ -19,6 +19,10 @@ export default function parseCode (minifiedCode, packageMetadata) {
   newPackageMetadata.iife = wrapIIFE(codeBody, newPackageMetadata)
   newPackageMetadata.dummyCode = generateDummyCode(newPackageMetadata)
 
+  if (packageMetadata.name === 'd3-scale') {
+    console.log(newPackageMetadata.iife)
+  }
+
   return newPackageMetadata
 }
 

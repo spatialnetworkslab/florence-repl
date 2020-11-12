@@ -1,6 +1,7 @@
 {
   "name": "florence-repl",
   "version": "0.0.1",
+  "svelte": "src/index.js",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
@@ -32,6 +33,7 @@
   },
   "dependencies": {
     "codemirror": "^5.58.2",
+    "lodash.debounce": "^4.0.8",
     "sirv-cli": "^1.0.0"
   },
   "jest": {

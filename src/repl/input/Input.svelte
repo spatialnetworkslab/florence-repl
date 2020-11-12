@@ -1,28 +1,39 @@
 <script>
-  import { tick } from 'svelte'
+  import { onMount } from 'svelte'
   import Editor from './codemirror/Editor.svelte'
-  import Tabs from './Tabs.svelte'
+  import Tabs from './tabs/Tabs.svelte'
+  import getFileIndex from '../../utils/getFileIndex.js'
 
   export let replFiles
-  export let currentFileName
+  export let currentFileId
+  export let height
 
-  $: currentFile = replFiles[currentFileName]
+  $ :currentFileIndex = getFileIndex(replFiles, currentFileId)
+  $: currentFile = replFiles[currentFileIndex]
 
   function updateCurrentFile (newCode) {
-    replFiles[currentFileName].source = newCode.detail
+    replFiles[currentFileIndex].source = newCode.detail
+  }
+
+  let tabsHeight
+  let editorHeight
+
+  $: {
+    editorHeight = height - tabsHeight
   }
 </script>
 
-<section>
-
-	<Tabs
-		bind:replFiles
-		bind:currentFileName
+<div bind:clientHeight={tabsHeight}>
+  <Tabs
+    bind:replFiles
+    bind:currentFileId
   />
+</div>
 
-	<Editor 
+{#if editorHeight}
+  <Editor 
     {currentFile}
     on:change={updateCurrentFile}
+    height={editorHeight}
   />
-
-</section>
+{/if}
