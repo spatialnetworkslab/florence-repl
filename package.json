@@ -1,5 +1,5 @@
 {
-  "name": "florence-repl",
+  "name": "@snlab/florence-repl",
   "version": "0.0.1",
   "svelte": "src/index.js",
   "scripts": {
