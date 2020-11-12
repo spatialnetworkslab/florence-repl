@@ -1,6 +1,4 @@
 /node_modules/
 /public/build/
-/public/bundler.js
-/public/bundler.js.map
 
 .DS_Store
