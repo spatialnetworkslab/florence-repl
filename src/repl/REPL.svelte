@@ -67,6 +67,50 @@
 </script>
 
 <style>
+  * {
+	  margin:0;
+	  padding:0;
+	  border:0;
+  }
+</style>
+
+<div style={`width: ${width}px; height: ${height}; position: relative;`}>
+
+  <div 
+    style={`
+      float: left;
+      width: ${width / 2}px;
+    `}
+  >
+
+    <Input
+      bind:replFiles 
+      bind:currentFileId
+      height={layout === 'horizontal' ? height : height / 2}
+    />
+  
+  </div>
+
+  <div
+    style={`
+      margin-left: ${width / 2}px;
+    `}
+  >
+
+    <Output
+      {bundled}
+      {error}
+      {bundling}
+      {width}
+    />
+  
+  </div>
+
+  <div style="clear: both;"></div>
+
+</div>
+
+<!-- <style>
 .split {
   position: absolute;
 }
@@ -126,4 +170,4 @@
 
   </div>
 
-</div>
+</div> -->

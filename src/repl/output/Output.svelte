@@ -5,6 +5,7 @@
   export let bundled
   export let error
   export let bundling
+  export let width
 
 	let iframe
 
@@ -46,7 +47,7 @@
 	} */
 
 	.overlay {
-		position: absolute;
+		position: relative;
 		bottom: 0;
 		width: 100%;
 	}
@@ -72,7 +73,10 @@
 		{/if}
 
     {#if bundling}
-      <Message kind="info" details={{ message: 'Bundling...' }} />
+      <Message 
+        kind="info" 
+        details={{ message: 'Bundling...' }}
+      />
     {/if}
 	</div>
 

@@ -1,63 +1,67 @@
 <script>
-  import { onMount } from 'svelte'
-  import preloadPackages from './preload/preloadPackages.js'
-  import DataContainer from './packages/DataContainer.js'
-  import florence from './packages/florence.js'
-  // import d3Scale from './packages/d3scale.js'
+  // import preloadPackages from './preload/preloadPackages.js'
+  // import DataContainer from './packages/DataContainer.js'
+  // import florence from './packages/florence.js'
   import REPL from './repl/REPL.svelte'
   import appSource from './appSource.js'
 
+  // const replFiles = [
+  //   {
+  //     id: 0,
+  //     name: 'App',
+	// 		type: 'svelte',
+	// 		source: appSource.trim(),
+  //   },
+    
+  //   {
+  //     id: 1,
+  //     name: 'Component1',
+  //     type: 'svelte',
+	//     source: '<h1>Hello</h1>',
+  //   }
+  // ]
   const replFiles = [
     {
       id: 0,
       name: 'App',
-			type: 'svelte',
-			source: appSource.trim(),
-    },
-    
-    {
-      id: 1,
-      name: 'Component1',
       type: 'svelte',
-	    source: '<h1>Hello</h1>',
+      source: '<h1>Hello!</h1>'
     }
   ]
-  
-  let currentFileId = 0
 
-  let preloaded
-
-  onMount(async () => {
-    preloaded = await preloadPackages([DataContainer, florence/*, d3Scale*/])
-  })
-
-  let width
-  let height
-
-  // let width = 1300
-  // let height = 500
-
-  let layout = 'horizontal'
+  const width = 800
+  const height = 400
 </script>
 
-<svelte:window
-  bind:innerWidth={width}
-  bind:innerHeight={height}
-/>
+<main>
+	<h1>Hello world!</h1>
+	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 
-{#if preloaded}
+  <REPL 
+    {replFiles}
+    {width}
+    {height}
+  />
+</main>
 
-  <div style="position: absolute; left: 0px; top: 0px;">
+<style>
+	main {
+		text-align: center;
+		padding: 1em;
+		max-width: 240px;
+		margin: 0 auto;
+	}
 
-    <REPL
-      {replFiles}
-      {currentFileId}
-      {preloaded}
-      {width}
-      {height}
-      {layout}
-    />
+	h1 {
+		color: #ff3e00;
+		text-transform: uppercase;
+		font-size: 4em;
+		font-weight: 100;
+	}
 
-  </div>
-
-{/if}
+	@media (min-width: 640px) {
+		main {
+			max-width: none;
+		}
+	}
+</style>
