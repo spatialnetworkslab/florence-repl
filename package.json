@@ -1,6 +1,6 @@
 {
   "name": "@snlab/florence-repl",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "svelte": "src/repl/REPL.svelte",
   "main": "src/repl/REPL.svelte",
   "scripts": {
