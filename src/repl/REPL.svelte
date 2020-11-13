@@ -60,9 +60,6 @@
 
   $: bundle(replFiles, preloaded)
 
-  $: inputClass = `split ${layout} ${layout === 'horizontal' ? 'left' : 'top' }`
-  $: outputClass = `split ${layout} ${layout === 'horizontal' ? 'right': 'bottom' }`
-
   $: loadingEditor = bundled ? null : { message: 'Loading editor...' }
 </script>
 
