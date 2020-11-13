@@ -13,8 +13,8 @@
   export let preloaded = undefined
   export let width
   export let height
-  export let layout = 'horizontal'
   export let debounce = 150
+  // export let layout = 'horizontal'
 
   if (!(getFileName(replFiles[0]) === 'App.svelte')) {
     throw new Error('First file must be \'App.svelte\'')
@@ -87,7 +87,7 @@
     <Input
       bind:replFiles 
       bind:currentFileId
-      height={layout === 'horizontal' ? height : height / 2}
+      {height}
     />
   
   </div>
@@ -109,65 +109,3 @@
   <div style="clear: both;"></div>
 
 </div>
-
-<!-- <style>
-.split {
-  position: absolute;
-}
-
-.horizontal {
-  width: 50%; 
-  height: 100%;
-}
-
-.vertical {
-  width: 100%; 
-  height: 50%;
-}
-
-.left {
-  left: 0;
-  border-right: 1px solid #eee;
-}
-
-.right {
-  right: 0;
-  border-left: 1px solid #eee;
-}
-
-.top {
-  top: 0;
-  border-bottom: 1px solid #eee;
-}
-
-.bottom {
-  bottom: 0;
-  border-top: 1px solid #eee;
-}
-</style>
-
-<div
-  style={`width: ${width}px; height: ${height}px;`}
->
-
-  <div class={inputClass}>
-
-    <Input
-      bind:replFiles 
-      bind:currentFileId
-      height={layout === 'horizontal' ? height : height / 2}
-    />
-
-  </div>
-
-  <div class={outputClass}>
-
-    <Output
-      {bundled}
-      {error}
-      {bundling}
-    />
-
-  </div>
-
-</div> -->
