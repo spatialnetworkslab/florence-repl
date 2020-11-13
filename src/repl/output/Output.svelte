@@ -21,6 +21,7 @@
 		border: none;
 		width: 100%;
 		height: 100%;
+    position: relative;
 	}
 
 	iframe {
@@ -28,28 +29,6 @@
 		height: 100%;
 		border: none;
 		display: block;
-	}
-
-	/* .greyed-out {
-		filter: grayscale(50%) blur(1px);
-		opacity: .25;
-	}
-
-	button {
-		color: #999;
-		font-size: 12px;
-		text-transform: uppercase;
-		display: block;
-	}
-
-	button:hover {
-		color: #333;
-	} */
-
-	.overlay {
-		position: relative;
-		bottom: 0;
-		width: 100%;
 	}
 </style>
 
@@ -60,24 +39,20 @@
     {srcdoc} 
   />
 
-  <!-- <div class="overlay">
-		{#if error}
-			<Message kind="error" details={error}/>
-		{:else if status || !bundled}
-			<Message kind="info" truncate>{status || 'loading Svelte compiler...'}</Message>
-		{/if}
-	</div> -->
-  <div class="overlay">
-		{#if error}
-			<Message kind="error" details={error} />
-		{/if}
+  {#if error}
+		<Message 
+      kind="error"
+      details={error}
+      {width}
+    />
+	{/if}
 
-    {#if bundling}
-      <Message 
-        kind="info" 
-        details={{ message: 'Bundling...' }}
-      />
-    {/if}
-	</div>
+  {#if bundling}
+    <Message 
+      kind="info" 
+      details={{ message: 'Bundling...' }}
+      {width}
+    />
+  {/if}
 
 </section>

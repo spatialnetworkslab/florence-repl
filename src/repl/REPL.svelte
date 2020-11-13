@@ -74,14 +74,15 @@
   }
 </style>
 
-<div style={`width: ${width}px; height: ${height}; position: relative;`}>
+<div style={`
+  width: ${width}px;
+  position: relative;
+`}>
 
-  <div 
-    style={`
-      float: left;
-      width: ${width / 2}px;
-    `}
-  >
+  <div style={`
+    float: left;
+    width: ${width / 2}px;
+  `}>
 
     <Input
       bind:replFiles 
@@ -91,17 +92,16 @@
   
   </div>
 
-  <div
-    style={`
-      margin-left: ${width / 2}px;
-    `}
-  >
+  <div style={`
+    margin-left: ${width / 2}px;
+    height: ${height}px;
+  `}>
 
     <Output
       {bundled}
       {error}
       {bundling}
-      {width}
+      width={width / 2}
     />
   
   </div>
