@@ -155,6 +155,7 @@
 	.codemirror-container {
     line-height: 1.5;
     font-family: "Courier New";
+    text-align: left;
   }
 
 	textarea {
