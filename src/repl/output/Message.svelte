@@ -4,11 +4,15 @@
 	export let kind
 	export let details = null
   export let truncate = false
+  export let width
+
+  console.log(width)
 </script>
 
 <style>
 	.message {
-		position: relative;
+    position: absolute;
+    bottom: 0px;
 		color: white;
 		padding: 12px 16px 12px 44px;
 		font: 400 12px/1.7 var(--font);
@@ -61,6 +65,7 @@
   in:slide={{delay: 150, duration: 100}}
   out:slide={{duration: 100}}
   class="message {kind}"
+  style={`width: ${width - 60}px;`}
   class:truncate
 >
 	
