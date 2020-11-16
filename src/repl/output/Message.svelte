@@ -5,8 +5,6 @@
 	export let details = null
   export let truncate = false
   export let width
-
-  console.log(width)
 </script>
 
 <style>
