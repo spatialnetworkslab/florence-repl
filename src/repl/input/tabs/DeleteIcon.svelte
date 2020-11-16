@@ -11,7 +11,8 @@
 <style>
   .edit-icon {
     cursor: pointer;
-    stroke: #999
+    stroke: #999;
+    display: inline-block;
   }
 
   .edit-icon:hover {

@@ -8,7 +8,8 @@
 <style>
   .edit-icon {
     cursor: pointer;
-    fill: #999
+    fill: #999;
+    display: inline-block;
   }
 
   .edit-icon:hover {
