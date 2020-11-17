@@ -7,6 +7,7 @@
   export let replFiles
   export let currentFileId
   export let height
+  export let fontSize
 
   $ :currentFileIndex = getFileIndex(replFiles, currentFileId)
   $: currentFile = replFiles[currentFileIndex]
@@ -35,5 +36,6 @@
     {currentFile}
     on:change={updateCurrentFile}
     height={editorHeight}
+    {fontSize}
   />
 {/if}

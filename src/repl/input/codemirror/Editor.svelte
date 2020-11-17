@@ -14,6 +14,7 @@
 	export let lineNumbers = true
   export let tab = true
   export let height
+  export let fontSize
   
   // Reference to <textarea> HTML element
   let textArea
@@ -77,7 +78,7 @@
 
     // if text in editor changes...
 		editor.on('change', instance => {
-      // editor.setSize(null, height)
+      editor.setSize(null, height)
       // Skip dispatch if the update is external
       // Avoids infinite loop
 			if (!updatingExternally) {
@@ -160,10 +161,13 @@
 
 	textarea {
 		visibility: hidden;
-	}
+  }
 </style>
 
-<div class="codemirror-container">
+<div 
+  class="codemirror-container"
+  style={`font-size: ${fontSize}px;`}
+>
 
   <!-- svelte-ignore a11y-positive-tabindex -->
 	<textarea

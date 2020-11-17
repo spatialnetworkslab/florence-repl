@@ -14,6 +14,7 @@
   export let width
   export let height
   export let debounce = 150
+  export let fontSize = 14
   // export let layout = 'horizontal'
 
   if (!(getFileName(replFiles[0]) === 'App.svelte')) {
@@ -23,6 +24,7 @@
   let bundled
   let error = null
   let bundling = false
+  let firstTime = true
 
   const bundler = new Worker('./bundler.js')
 
@@ -35,6 +37,7 @@
     }
 
     error = null
+    firstTime = false
 
 		if (preloaded) {
       bundled = injectPreloadedCode(
@@ -85,6 +88,7 @@
       bind:replFiles 
       bind:currentFileId
       {height}
+      {fontSize}
     />
   
   </div>
@@ -99,6 +103,7 @@
       {error}
       {bundling}
       width={width / 2}
+      {firstTime}
     />
   
   </div>
