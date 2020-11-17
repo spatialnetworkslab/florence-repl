@@ -22,7 +22,7 @@ export default {
     PointLayer: 'Sd',
     Polygon: 'Xu',
     PolygonLayer: 'Nd',
-    Rectangle: 'Rd',
+    Rectangle: 'Ru',
     RectangleLayer: 'Pd',
     Section: 'Gc',
     SymbolLayer: 'Xd',
