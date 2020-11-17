@@ -31,23 +31,24 @@
     preloaded = await preloadPackages([DataContainer, florence/*, d3Scale*/])
   })
 
-  // let width
-  // let height
+  let width
+  let height
 
-  let width = 1300
-  let height = 500
+  // let width = 1300
+  // let height = 500
 
   let layout = 'horizontal'
 </script>
 
-<!-- <svelte:window
+<svelte:window
   bind:innerWidth={width}
   bind:innerHeight={height}
-/> -->
+/>
 
 {#if preloaded}
 
-  <div style="position: absolute; left: 200px; top: 200px;">
+  <!-- <div style="position: absolute; left: 200px; top: 200px;"> -->
+  <div style="position: absolute; left: 0px; top: 0px;">
 
     <REPL
       {replFiles}

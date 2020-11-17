@@ -16,6 +16,7 @@
 		font: 400 12px/1.7 var(--font);
 		margin: 0;
 		border-top: 1px solid white;
+    box-sizing: border-box;
 	}
 
 	.message::before {
@@ -63,7 +64,7 @@
   in:slide={{delay: 150, duration: 100}}
   out:slide={{duration: 100}}
   class="message {kind}"
-  style={`width: ${width - 60}px;`}
+  style={`width: ${width}px;`}
   class:truncate
 >
 	
