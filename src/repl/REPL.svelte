@@ -23,6 +23,7 @@
   let bundled
   let error = null
   let bundling = false
+  let firstTime = true
 
   const bundler = new Worker('./bundler.js')
 
@@ -35,6 +36,7 @@
     }
 
     error = null
+    firstTime = false
 
 		if (preloaded) {
       bundled = injectPreloadedCode(
@@ -99,6 +101,7 @@
       {error}
       {bundling}
       width={width / 2}
+      {firstTime}
     />
   
   </div>
