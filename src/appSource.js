@@ -16,6 +16,7 @@ export default `
   height={500}
   scaleX={scaleLinear().domain([0, 10])}
   scaleY={scaleLinear().domain([0, 10])}
+  backgroundColor="red"
 >
   <Point x={5} y={5} radius={50} />
 </Graphic>

@@ -57,6 +57,7 @@
       {width}
       {height}
       {layout}
+      fontSize={14}
     />
 
   </div>

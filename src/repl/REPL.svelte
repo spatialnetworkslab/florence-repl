@@ -14,6 +14,7 @@
   export let width
   export let height
   export let debounce = 150
+  export let fontSize = 14
   // export let layout = 'horizontal'
 
   if (!(getFileName(replFiles[0]) === 'App.svelte')) {
@@ -87,6 +88,7 @@
       bind:replFiles 
       bind:currentFileId
       {height}
+      {fontSize}
     />
   
   </div>

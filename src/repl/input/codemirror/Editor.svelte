@@ -14,6 +14,7 @@
 	export let lineNumbers = true
   export let tab = true
   export let height
+  export let fontSize
   
   // Reference to <textarea> HTML element
   let textArea
@@ -160,10 +161,13 @@
 
 	textarea {
 		visibility: hidden;
-	}
+  }
 </style>
 
-<div class="codemirror-container">
+<div 
+  class="codemirror-container"
+  style={`font-size: ${fontSize}px;`}
+>
 
   <!-- svelte-ignore a11y-positive-tabindex -->
 	<textarea
