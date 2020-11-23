@@ -13,20 +13,19 @@ for(var t={},s="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
 function getResolveId ({ fileLookup }) {
   return async function resolveId (importee, importer) {
     // import x from 'svelte'
-    // if (importee === 'svelte') return `@SVELTE@${cdn('svelte/index.mjs')}`
     if (importee === 'svelte') return 'https://unpkg.com/svelte/index.mjs'
 
     // import x from 'svelte/somewhere'
     if (importee.startsWith('svelte/')) {
-      return `@SVELTE@${`https://unpkg.com/svelte/${importee.slice(7)}/index.mjs`}`
+      return `https://unpkg.com/svelte/${importee.slice(7)}/index.mjs`
     }
 
     // import x from './file.js' (inside 'svelte' or 'svelte/x' packages)
-    if (importer && importer.startsWith(cdn('svelte'))) {
+    if (importer && importer.startsWith('https://unpkg.com/svelte')) {
       const resolved = new URL(importee, importer).href;
       if (resolved.endsWith('.mjs')) return resolved
 
-      return `@SVELTE@${`${resolved}/index.mjs`}`
+      return `${resolved}/index.mjs`
     }
 
     // local repl files
@@ -59,8 +58,8 @@ async function fetchIfUncached (url) {
 
 function getLoad ({ fileLookup }) {
   return async function load (id) {
-    if (id.startsWith('@SVELTE@')) {
-      return await fetchIfUncached(id.slice(8))
+    if (id.startsWith('https://unpkg.com/svelte')) {
+      return await fetchIfUncached(id)
     }
 
     if (id in fileLookup) {
@@ -89,34 +88,40 @@ function repl ({ fileLookup }) {
   }
 }
 
-async function getPackageURL (packageName, cdn) {
-  const url = cdn(packageName);
-  const pkgUrl = `${url}/package.json`;
-  const pkg = JSON.parse(await fetchIfUncached(pkgUrl));
+async function getPackageURL (packageName) {
+  // const url = cdn(packageName)
+  // const pkgUrl = `${url}/package.json`
+  // const pkg = JSON.parse(await fetchPackage(pkgUrl))
 
-  if (packageName === '@snlab/florence') {
-    return new URL(pkg.module, `${url}/`).href
-  } else {
-    // get an entry point from the pkg.json - first try svelte, then modules, then main
-    if (pkg.svelte || pkg.module || pkg.main) {
-      // use the above url minus `/package.json` to resolve the URL
-      return new URL(pkg.svelte || pkg.module || pkg.main, `${url}/`).href
-    }
-  }
+  // if (packageName === '@snlab/florence') {
+  //   return new URL(pkg.module, `${url}/`).href
+  // } else {
+  //   // get an entry point from the pkg.json - first try svelte, then modules, then main
+  //   if (pkg.svelte || pkg.module || pkg.main) {
+  //     // use the above url minus `/package.json` to resolve the URL
+  //     return new URL(pkg.svelte || pkg.module || pkg.main, `${url}/`).href
+  //   }
+  // }
+
+  return `https://cdn.skypack.dev/${packageName}`
 }
 
-function createPlugin ({ packageURL, cdn }) {
+function createPlugin ({ packageURL }) {
   return {
     name: 'preload-plugin',
 
     async resolveId (id, importer) {
       if (id === packageURL) return packageURL
 
+      if (isSkypackPath(id)) {
+        return `https://cdn.skypack.dev${id}`
+      }
+
       if (isRelativeImport(id)) {
         return getRelativeURL(id, importer)
       }
 
-      return await getPackageURL(id, cdn)
+      return await getPackageURL(id)
     },
 
     load (id) {
@@ -130,6 +135,10 @@ function createPlugin ({ packageURL, cdn }) {
   }
 }
 
+function isSkypackPath (id) {
+  return id.startsWith('/-/')
+}
+
 function isRelativeImport (id) {
   return id.startsWith('.')
 }
@@ -138,12 +147,12 @@ function getRelativeURL (id, importer) {
   return new URL(id, importer).href
 }
 
-async function prebundle ({ packageName, cdn }) {
-  const packageURL = await getPackageURL(packageName, cdn);
+async function prebundle ({ packageName }) {
+  const packageURL = await getPackageURL(packageName);
 
   const inputConfig = {
     input: packageURL,
-    plugins: [createPlugin({ packageURL, cdn })]
+    plugins: [createPlugin({ packageURL })]
   };
 
   const bundle = await Fo(inputConfig);
@@ -152,7 +161,7 @@ async function prebundle ({ packageName, cdn }) {
   return output[0]
 }
 
-function prebundler ({ cdn, cache }) {
+function prebundler ({ cache }) {
   return {
     resolveId (importee, importer) {
       return importee
@@ -161,7 +170,7 @@ function prebundler ({ cdn, cache }) {
     async load (importee, importer) {
       if (importee in cache) return cache[importee].code
 
-      const prebundled = await prebundle({ packageName: importee, cdn });
+      const prebundled = await prebundle({ packageName: importee });
       cache[importee] = prebundled;
       return cache[importee].code
     }
