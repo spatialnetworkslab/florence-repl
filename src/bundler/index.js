@@ -30,8 +30,8 @@ self.addEventListener(
         cache: rollupCache,
         plugins: [
           repl({ fileLookup, cdn }),
-          prebundler({ cdn, cache: prebundlerCache }),
-          json
+          json,
+          prebundler({ cdn, cache: prebundlerCache })
         ],
         inlineDynamicImports: true
       })
