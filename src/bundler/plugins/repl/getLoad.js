@@ -2,8 +2,8 @@ import fetchIfUncached from '../../fetchPackage.js'
 
 export default function getLoad ({ fileLookup }) {
   return async function load (id) {
-    if (id.startsWith('@SVELTE@')) {
-      return await fetchIfUncached(id.slice(8))
+    if (id.startsWith('https://unpkg.com/svelte')) {
+      return await fetchIfUncached(id)
     }
 
     if (id in fileLookup) {

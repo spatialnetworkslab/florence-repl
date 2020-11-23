@@ -22,16 +22,15 @@ self.addEventListener(
   'message',
   async event => {
     const fileLookup = generateFileLookup(event.data.replFiles)
-    const cdn = name => `${event.data.cdn}/${name}`
 
     try {
       const bundle = await rollup.rollup({
         input: './App.svelte',
         cache: rollupCache,
         plugins: [
-          repl({ fileLookup, cdn }),
+          repl({ fileLookup }),
           json,
-          prebundler({ cdn, cache: prebundlerCache })
+          prebundler({ cache: prebundlerCache })
         ],
         inlineDynamicImports: true
       })

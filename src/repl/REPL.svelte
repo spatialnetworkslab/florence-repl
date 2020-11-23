@@ -13,7 +13,6 @@
   export let height
   export let debounce = 150
   export let fontSize = 14
-  export let cdn = 'https://unpkg.com'
   export let workersDir = 'workers'
   // export let layout = 'horizontal'
 
@@ -44,7 +43,7 @@
 
   function bundleFn (replFiles) {
     bundling = true
-    bundler.postMessage({ replFiles, cdn })
+    bundler.postMessage({ replFiles })
 	}
 
 	$: bundle = debounce ? _debounce(bundleFn, debounce) : bundleFn

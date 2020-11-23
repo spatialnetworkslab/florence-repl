@@ -1,7 +1,7 @@
 import getPackageURL from './getPackageURL.js'
 import fetchPackage from '../../fetchPackage.js'
 
-export default function createPlugin ({ packageURL, cdn }) {
+export default function createPlugin ({ packageURL }) {
   return {
     name: 'preload-plugin',
 
@@ -12,7 +12,7 @@ export default function createPlugin ({ packageURL, cdn }) {
         return getRelativeURL(id, importer)
       }
 
-      return await getPackageURL(id, cdn)
+      return await getPackageURL(id)
     },
 
     load (id) {

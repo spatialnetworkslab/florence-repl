@@ -1,7 +1,8 @@
 import fetchPackage from '../../fetchPackage.js'
 
-export default async function getPackageURL (packageName, cdn) {
-  const url = cdn(packageName)
+export default async function getPackageURL (packageName) {
+  // const url = cdn(packageName)
+  const url = 'TODO'
   const pkgUrl = `${url}/package.json`
   const pkg = JSON.parse(await fetchPackage(pkgUrl))
 
