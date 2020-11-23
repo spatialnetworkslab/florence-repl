@@ -4,17 +4,16 @@
   import Input from './input/Input.svelte'
 	import Output from './output/Output.svelte'
 
-  import injectPreloadedCode from '../preload/injectPreloadedCode.js'
   import getFileName from '../utils/getFileName.js'
   import getDummyCodePackages from '../utils/getDummyCodePackages.js'
 
   export let replFiles
   export let currentFileId = 0
-  export let preloaded = undefined
   export let width
   export let height
   export let debounce = 150
   export let fontSize = 14
+  export let cdn = name => `https://unpkg.com/${name}`
   // export let layout = 'horizontal'
 
   if (!(getFileName(replFiles[0]) === 'App.svelte')) {
@@ -39,29 +38,17 @@
     error = null
     firstTime = false
 
-		if (preloaded) {
-      bundled = injectPreloadedCode(
-        event.data.bundled,
-        event.data.preloadedPackagesUsed,
-        preloaded
-      )
-
-      return
-    }
-
     bundled = event.data.bundled
 	})
 
   function bundleFn (replFiles) {
     bundling = true
-
-    const dummyCodePackages = getDummyCodePackages(preloaded)
-    bundler.postMessage({ replFiles, dummyCodePackages })
+    bundler.postMessage({ replFiles, cdn })
 	}
 
 	$: bundle = debounce ? _debounce(bundleFn, debounce) : bundleFn
 
-  $: bundle(replFiles, preloaded)
+  $: bundle(replFiles)
 
   $: loadingEditor = bundled ? null : { message: 'Loading editor...' }
 </script>

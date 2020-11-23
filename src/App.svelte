@@ -1,9 +1,5 @@
 <script>
   import { onMount } from 'svelte'
-  import preloadPackages from './preload/preloadPackages.js'
-  import DataContainer from './packages/DataContainer.js'
-  import florence from './packages/florence.js'
-  // import d3Scale from './packages/d3scale.js'
   import REPL from './repl/REPL.svelte'
   import appSource from './appSource.js'
 
@@ -24,13 +20,6 @@
   ]
   
   let currentFileId = 0
-
-  let preloaded
-
-  onMount(async () => {
-    preloaded = await preloadPackages([DataContainer, florence/*, d3Scale*/])
-  })
-
   let width
   let height
 
@@ -45,21 +34,16 @@
   bind:innerHeight={height}
 />
 
-{#if preloaded}
+<!-- <div style="position: absolute; left: 200px; top: 200px;"> -->
+<div style="position: absolute; left: 0px; top: 0px;">
 
-  <!-- <div style="position: absolute; left: 200px; top: 200px;"> -->
-  <div style="position: absolute; left: 0px; top: 0px;">
+  <REPL
+    {replFiles}
+    {currentFileId}
+    {width}
+    {height}
+    {layout}
+    fontSize={14}
+  />
 
-    <REPL
-      {replFiles}
-      {currentFileId}
-      {preloaded}
-      {width}
-      {height}
-      {layout}
-      fontSize={14}
-    />
-
-  </div>
-
-{/if}
+</div>
