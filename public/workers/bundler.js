@@ -116,6 +116,11 @@ function createPlugin ({ packageURL, cdn }) {
 
     load (id) {
       return fetchIfUncached(id)
+    },
+
+    transform (code, id) {
+      // eslint-disable-next-line
+      if (/.*\.svelte/.test(id)) return svelte.compile(code).js.code
     }
   }
 }
