@@ -89,20 +89,6 @@ function repl ({ fileLookup }) {
 }
 
 async function getPackageURL (packageName) {
-  // const url = cdn(packageName)
-  // const pkgUrl = `${url}/package.json`
-  // const pkg = JSON.parse(await fetchPackage(pkgUrl))
-
-  // if (packageName === '@snlab/florence') {
-  //   return new URL(pkg.module, `${url}/`).href
-  // } else {
-  //   // get an entry point from the pkg.json - first try svelte, then modules, then main
-  //   if (pkg.svelte || pkg.module || pkg.main) {
-  //     // use the above url minus `/package.json` to resolve the URL
-  //     return new URL(pkg.svelte || pkg.module || pkg.main, `${url}/`).href
-  //   }
-  // }
-
   return `https://cdn.skypack.dev/${packageName}`
 }
 
@@ -147,11 +133,14 @@ function getRelativeURL (id, importer) {
   return new URL(id, importer).href
 }
 
+let cache;
+
 async function prebundle ({ packageName }) {
   const packageURL = await getPackageURL(packageName);
 
   const inputConfig = {
     input: packageURL,
+    cache,
     plugins: [createPlugin({ packageURL })]
   };
 
@@ -170,25 +159,22 @@ function prebundler ({ cache }) {
     async load (importee, importer) {
       if (importee in cache) return cache[importee].code
 
-      // if (importee === '@snlab/florence') {
-      //   const prebundled = await fetchPackage('https://cdn.skypack.net/@snlab/florence')
-      // }
+      let prebundled;
 
-      // const prebundled = await prebundle({ packageName: importee })
-
-      const prebundled = importee === '@snlab/florence'
-        ? await fetchFlorence()
-        : await prebundle({ packageName: importee });
+      if (importee === '@snlab/florence') {
+        const code = await fetchIfUncached('https://cdn.skypack.dev/@snlab/florence');
+        prebundled = { code };
+      } else if (importee.startsWith('/-/@snlab')) {
+        const code = fetchIfUncached(`https://cdn.skypack.dev${importee}`);
+        prebundled = { code };
+      } else {
+        prebundled = await prebundle({ packageName: importee });
+      }
 
       cache[importee] = prebundled;
       return cache[importee].code
     }
   }
-}
-
-async function fetchFlorence () {
-  const code = await fetchIfUncached('https://cdn.skypack.dev/-/@snlab/florence@v0.1.22-0GlOErMo1VIYJxFjzNJK/dist=es2020/@snlab/florence.js');
-  return { code }
 }
 
 var json = {
