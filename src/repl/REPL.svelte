@@ -70,6 +70,8 @@
   <div style={`
     float: left;
     width: ${width / 2}px;
+    border-right: 1px solid #eee;
+    box-sizing: border-box;
   `}>
 
     <Input
