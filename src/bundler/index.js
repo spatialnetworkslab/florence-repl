@@ -22,7 +22,7 @@ self.addEventListener(
   'message',
   async event => {
     const fileLookup = generateFileLookup(event.data.replFiles)
-    const cdn = event.data.cdn
+    const cdn = name => `${event.data.cdn}/${name}`
 
     try {
       const bundle = await rollup.rollup({

@@ -3,13 +3,13 @@ import prebundle from './prebundle.js'
 export default function prebundler ({ cdn, cache }) {
   return {
     resolveId (importee, importer) {
-      if (importee in cache) return importee
+      return importee
     },
 
-    loadId (importee, importer) {
+    async load (importee, importer) {
       if (importee in cache) return cache[importee].code
 
-      const prebundled = prebundle({ packageName: importee, cdn })
+      const prebundled = await prebundle({ packageName: importee, cdn })
       cache[importee] = prebundled
       return cache[importee].code
     }

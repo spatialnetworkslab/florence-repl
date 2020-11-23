@@ -13,7 +13,8 @@
   export let height
   export let debounce = 150
   export let fontSize = 14
-  export let cdn = name => `https://unpkg.com/${name}`
+  export let cdn = 'https://unpkg.com'
+  export let workersDir = 'workers'
   // export let layout = 'horizontal'
 
   if (!(getFileName(replFiles[0]) === 'App.svelte')) {
@@ -25,7 +26,7 @@
   let bundling = false
   let firstTime = true
 
-  const bundler = new Worker('./bundler.js')
+  const bundler = new Worker(`./${workersDir}/bundler.js`)
 
 	bundler.addEventListener('message', event => {
     bundling = false
