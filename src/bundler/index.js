@@ -1,9 +1,7 @@
 import * as rollup from 'rollup/dist/es/rollup.browser.js'
-import json from './plugins/json.js'
-
-import getResolveId from './getResolveId.js'
-import getLoad from './getLoad.js'
-import getTransform from './getTransform.js'
+import repl from './plugins/repl/repl.js'
+import prebundler from './plugins/prebundler/prebundler.js'
+import json from './plugins/json/json.js'
 
 import getFileName from '../utils/getFileName.js'
 
@@ -18,34 +16,21 @@ function generateFileLookup (replFiles) {
 }
 
 let rollupCache
+const prebundlerCache = {}
 
 self.addEventListener(
   'message',
   async event => {
-    const preloadedPackagesUsed = {}
-
     const fileLookup = generateFileLookup(event.data.replFiles)
-    const dummyCodePackages = event.data.dummyCodePackages
 
     try {
       const bundle = await rollup.rollup({
         input: './App.svelte',
         cache: rollupCache,
         plugins: [
-          {
-            name: 'repl-plugin',
-            resolveId: getResolveId(
-              fileLookup,
-              dummyCodePackages
-            ),
-            load: getLoad(
-              fileLookup,
-              preloadedPackagesUsed,
-              dummyCodePackages
-            ),
-            transform: getTransform()
-          },
-          json
+          repl({ fileLookup }),
+          json,
+          prebundler({ cache: prebundlerCache })
         ],
         inlineDynamicImports: true
       })
@@ -58,7 +43,7 @@ self.addEventListener(
         .output[0]
         .code
 
-      self.postMessage({ bundled, preloadedPackagesUsed })
+      self.postMessage({ bundled })
     } catch (errorMessage) {
       const error = { message: errorMessage.toString() }
       self.postMessage({ error })

@@ -1,7 +1,5 @@
-import CDN_URL from './CDN_URL.js'
-
 // eslint-disable-next-line
-importScripts(`${CDN_URL}/svelte/compiler.js`)
+importScripts(`https://unpkg.com/svelte/compiler.js`)
 
 export default function () {
   return function transform (code, id) {
