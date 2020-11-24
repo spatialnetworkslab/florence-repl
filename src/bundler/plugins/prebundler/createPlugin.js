@@ -6,6 +6,9 @@ export default function createPlugin ({ packageURL }) {
     name: 'preload-plugin',
 
     async resolveId (id, importer) {
+      console.log(id)
+      console.log(importer)
+
       if (id === packageURL) return packageURL
 
       if (isSkypackPath(id)) {

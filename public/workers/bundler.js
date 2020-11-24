@@ -89,6 +89,7 @@ function repl ({ fileLookup }) {
 }
 
 async function getPackageURL (packageName) {
+  packageName = packageName.startsWith('/') ? packageName.slice(1) : packageName;
   return `https://cdn.skypack.dev/${packageName}`
 }
 
@@ -97,6 +98,9 @@ function createPlugin ({ packageURL }) {
     name: 'preload-plugin',
 
     async resolveId (id, importer) {
+      console.log(id);
+      console.log(importer);
+
       if (id === packageURL) return packageURL
 
       if (isSkypackPath(id)) {
