@@ -89,6 +89,7 @@ function repl ({ fileLookup }) {
 }
 
 async function getPackageURL (packageName) {
+  packageName = packageName.startsWith('/') ? packageName.slice(1) : packageName;
   return `https://cdn.skypack.dev/${packageName}`
 }
 
@@ -98,15 +99,6 @@ function createPlugin ({ packageURL }) {
 
     async resolveId (id, importer) {
       if (id === packageURL) return packageURL
-
-      if (isSkypackPath(id)) {
-        return `https://cdn.skypack.dev${id}`
-      }
-
-      if (isRelativeImport(id)) {
-        return getRelativeURL(id, importer)
-      }
-
       return await getPackageURL(id)
     },
 
@@ -119,18 +111,6 @@ function createPlugin ({ packageURL }) {
       if (/.*\.svelte/.test(id)) return svelte.compile(code).js.code
     }
   }
-}
-
-function isSkypackPath (id) {
-  return id.startsWith('/-/')
-}
-
-function isRelativeImport (id) {
-  return id.startsWith('.')
-}
-
-function getRelativeURL (id, importer) {
-  return new URL(id, importer).href
 }
 
 let cache;
