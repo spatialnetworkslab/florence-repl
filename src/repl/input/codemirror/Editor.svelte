@@ -157,6 +157,8 @@
     line-height: 1.5;
     font-family: "Courier New";
     text-align: left;
+    width: 100%;
+    height: 100%;
   }
 
 	textarea {
@@ -171,7 +173,7 @@
 
   <!-- svelte-ignore a11y-positive-tabindex -->
 	<textarea
-		tabindex='2'
+		tabindex="2"
 		bind:this={textArea}
 		readonly
 	/>

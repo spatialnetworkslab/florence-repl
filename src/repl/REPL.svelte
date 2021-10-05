@@ -9,8 +9,6 @@
 
   export let replFiles
   export let currentFileId = 0
-  export let width
-  export let height
   export let debounce = 150
   export let fontSize = 14
   export let workersDir = 'workers'
@@ -59,44 +57,27 @@
 	  padding:0;
 	  border:0;
   }
+
+  .container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
 </style>
 
-<div style={`
-  width: ${width}px;
-  position: relative;
-`}>
+<div class="container">
 
-  <div style={`
-    float: left;
-    width: ${width / 2}px;
-    border-right: 1px solid #eee;
-    box-sizing: border-box;
-  `}>
-
-    <Input
-      bind:replFiles 
-      bind:currentFileId
-      {height}
-      {fontSize}
-    />
+  <Input
+    bind:replFiles 
+    bind:currentFileId
+    {fontSize}
+  />
   
-  </div>
-
-  <div style={`
-    margin-left: ${width / 2}px;
-    height: ${height}px;
-  `}>
-
-    <Output
-      {bundled}
-      {error}
-      {bundling}
-      width={width / 2}
-      {firstTime}
-    />
+  <Output
+    {bundled}
+    {error}
+    {bundling}
+    {firstTime}
+  />
   
-  </div>
-
-  <div style="clear: both;"></div>
-
 </div>

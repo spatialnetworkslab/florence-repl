@@ -5,7 +5,6 @@
   export let bundled
   export let error
   export let bundling
-  export let width
   export let firstTime
 
 	let iframe
@@ -44,7 +43,6 @@
 		<Message 
       kind="error"
       details={error}
-      {width}
     />
 	{/if}
 
@@ -52,7 +50,6 @@
     <Message 
       kind="info" 
       details={{ message: 'Bundling...' }}
-      {width}
     />
   {/if}
 
@@ -60,7 +57,6 @@
     <Message 
       kind="info" 
       details={{ message: 'Loading REPL...' }}
-      {width}
     />
   {/if}
 

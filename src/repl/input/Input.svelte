@@ -6,7 +6,6 @@
 
   export let replFiles
   export let currentFileId
-  export let height
   export let fontSize
 
   $ :currentFileIndex = getFileIndex(replFiles, currentFileId)
@@ -15,27 +14,19 @@
   function updateCurrentFile (newCode) {
     replFiles[currentFileIndex].source = newCode.detail
   }
-
-  let tabsHeight
-  let editorHeight
-
-  $: {
-    editorHeight = height - tabsHeight
-  }
 </script>
 
-<div bind:clientHeight={tabsHeight}>
+<div style="height: 100%; width: 100%;">
+
   <Tabs
     bind:replFiles
     bind:currentFileId
   />
-</div>
 
-{#if editorHeight}
   <Editor 
     {currentFile}
     on:change={updateCurrentFile}
-    height={editorHeight}
     {fontSize}
   />
-{/if}
+
+</div>

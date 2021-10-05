@@ -20,30 +20,21 @@
   ]
   
   let currentFileId = 0
-  let width
-  let height
-
-  // let width = 1300
-  // let height = 500
-
-  let layout = 'horizontal'
+  // let layout = 'horizontal'
 </script>
 
-<svelte:window
-  bind:innerWidth={width}
-  bind:innerHeight={height}
-/>
+<style>
+  .page-container {
+    margin: 5%;
+    height: 85%;
+    width: 90%;
+  }
+</style>
 
-<!-- <div style="position: absolute; left: 200px; top: 200px;"> -->
-<div style="position: absolute; left: 0px; top: 0px;">
-
+<div class="page-container">
   <REPL
     {replFiles}
     {currentFileId}
-    {width}
-    {height}
-    {layout}
     fontSize={14}
   />
-
 </div>
