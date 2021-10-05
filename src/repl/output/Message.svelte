@@ -9,6 +9,7 @@
 <style>
 	.message {
     position: absolute;
+		width: calc(100% - 32px);
     bottom: 0px;
 		color: white;
 		padding: 12px 16px 12px 44px;
