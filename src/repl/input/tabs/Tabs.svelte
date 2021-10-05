@@ -47,11 +47,10 @@
 </script>
 
 <style>
-	.component-selector {
-		position: relative;
+	.file-selector {
 		border-bottom: 1px solid #eee;
-		overflow: hidden;
     text-align: left;
+    z-index: 3;
 	}
 
 	.file-tabs {
@@ -63,7 +62,7 @@
 	}
 </style>
 
-<div class="component-selector">
+<div class="file-selector">
 	<div class="file-tabs" on:dblclick="{addNew}">
 			
     {#each replFiles as replFile}
@@ -78,17 +77,18 @@
         on:dragleave={dragLeave}
         on:dragend={dragEnd}
       /> -->
+
       <Tab
         bind:replFile
         {usedFileNames}
         active={replFile.id === currentFileId}
         on:select={select}
         on:remove={remove}
-      /><!--
+      />
+        
+    {/each}
 
-		-->{/each}<!--
-
-		--><AddNewButton on:click={addNew} />
+		<AddNewButton on:click={addNew} />
 		
   </div>
 </div>

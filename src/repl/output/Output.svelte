@@ -21,7 +21,7 @@
 		border: none;
 		width: 100%;
 		height: 100%;
-    position: relative;
+    padding-left: 16px;
 	}
 
 	iframe {

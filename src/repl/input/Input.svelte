@@ -16,17 +16,30 @@
   }
 </script>
 
-<div style="height: 100%; width: 100%;">
+<style>
+  .input-container {
+    height: 100%; 
+    width: 100%;
+    border-right:
+    2px solid #ddd;
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
+<div class="input-container">
 
   <Tabs
     bind:replFiles
     bind:currentFileId
   />
 
-  <Editor 
-    {currentFile}
-    on:change={updateCurrentFile}
-    {fontSize}
-  />
+  <div style="height: calc(100% - 35px);">
+    <Editor 
+      {currentFile}
+      on:change={updateCurrentFile}
+      {fontSize}
+    />
+  </div>
 
 </div>
