@@ -21,6 +21,7 @@
 		object-fit: contain;
 		-webkit-transform-origin: center center;
 		transform-origin: center center;
+    transform: translateY(-1px);
 
 		stroke: #999;
 		stroke-width: 2;
