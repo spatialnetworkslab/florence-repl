@@ -1,6 +1,5 @@
 <script>
-  import _debounce from 'lodash.debounce'
-
+  import { onMount } from 'svelte'
   import Input from './input/Input.svelte'
 	import Output from './output/Output.svelte'
 
@@ -9,7 +8,6 @@
 
   export let replFiles
   export let currentFileId = 0
-  export let debounce = 150
   export let fontSize = 14
   export let workersDir = 'workers'
   // export let layout = 'horizontal'
@@ -39,14 +37,12 @@
     bundled = event.data.bundled
 	})
 
-  function bundleFn (replFiles) {
+  function bundle () {
     bundling = true
     bundler.postMessage({ replFiles })
 	}
 
-	$: bundle = debounce ? _debounce(bundleFn, debounce) : bundleFn
-
-  $: bundle(replFiles)
+  bundle()
 
   $: loadingEditor = bundled ? null : { message: 'Loading editor...' }
 </script>
@@ -71,6 +67,8 @@
     bind:replFiles 
     bind:currentFileId
     {fontSize}
+    {bundling}
+    on:bundle={bundle}
   />
   
   <Output

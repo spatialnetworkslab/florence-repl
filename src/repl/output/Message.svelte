@@ -4,7 +4,6 @@
 	export let kind
 	export let details = null
   export let truncate = false
-  export let width
 </script>
 
 <style>
@@ -64,7 +63,6 @@
   in:slide={{delay: 150, duration: 100}}
   out:slide={{duration: 100}}
   class="message {kind}"
-  style={`width: ${width}px;`}
   class:truncate
 >
 	

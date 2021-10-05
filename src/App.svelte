@@ -28,6 +28,7 @@
     margin: 5%;
     height: 85%;
     width: 90%;
+    border: 1px solid #ddd;
   }
 </style>
 
