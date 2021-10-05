@@ -51,6 +51,7 @@
 		border-bottom: 1px solid #eee;
     text-align: left;
     z-index: 3;
+    box-shadow: 0 5px 5px -5px #ddd;
 	}
 
 	.file-tabs {
