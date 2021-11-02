@@ -1,5 +1,5 @@
 import createCodeMirror from './package/lib/codemirror.js'
-import './codemirror.css'
+// import './codemirror.css'
 
 // import './package/mode/shell/shell.js'
 
