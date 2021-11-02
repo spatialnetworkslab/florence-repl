@@ -1,4 +1,4 @@
-import CodeMirror from './package/src/codemirror.js'
+import CodeMirror from './package/lib/codemirror.js'
 import './codemirror.css'
 
 import './package/mode/javascript/javascript.js'
