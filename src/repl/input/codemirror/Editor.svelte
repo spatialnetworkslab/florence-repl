@@ -1,5 +1,5 @@
 <script>
-  import CodeMirror from './codemirror.js'
+  import loadCodeMirror from './loadCodeMirror.js'
   import { onMount, createEventDispatcher } from 'svelte'
   import { createCodemirrorOptions } from './createCodemirrorOptions.js'
   import { sleep } from '../../../utils/sleep.js'
@@ -40,8 +40,15 @@
   // Cursor position
   let cursorPosition = { line: 0, ch: 0 }
 
+  // CodeMirror lazy loaded
+  let CodeMirror
+
   // Set destroyed to true when component is destroyed
   onMount(async () => {
+    if (!CodeMirror) {
+      CodeMirror = loadCodeMirror()
+    }
+
     type = currentFile.type
     await createEditor()
     editor.setSize(null, height)
