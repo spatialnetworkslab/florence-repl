@@ -21,7 +21,7 @@
   let bundling = false
   let firstTime = true
 
-  const bundler = new Worker(`./${workersDir}/bundler.js`)
+  const bundler = new Worker(`${workersDir}/bundler.js`)
 
 	bundler.addEventListener('message', event => {
     bundling = false
